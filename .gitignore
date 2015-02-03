@@ -32,3 +32,10 @@
 
 # Composer PHAR
 /composer.phar
+/composer.lock
+
+# Dev
+nbproject/
+Tests/bootstrap.php
+Tests/Fixtures/app/cache
+Tests/Fixtures/app/logs
