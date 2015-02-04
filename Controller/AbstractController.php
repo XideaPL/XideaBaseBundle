@@ -9,7 +9,9 @@
 
 namespace Xidea\Bundle\BaseBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\RouterInterface,
+    Symfony\Component\EventDispatcher\EventDispatcherInterface,
+    Symfony\Component\Translation\TranslatorInterface;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 
 /**
@@ -26,6 +28,16 @@ abstract class AbstractController
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+    
+    /*
+     * @var RouterInterface
+     */
+    protected $router;
+    
+    /*
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     public function __construct(ConfigurationInterface $configuration)
     {
@@ -50,5 +62,25 @@ abstract class AbstractController
     public function getEventDispatcher()
     {
         return $this->eventDispatcher;
+    }
+    
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+    
+    public function getRouter()
+    {
+        return $this->router;
+    }
+    
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+    
+    public function getTranslator()
+    {
+        return $this->translator;
     }
 }
