@@ -9,6 +9,7 @@
 
 namespace Xidea\Bundle\BaseBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 
 /**
@@ -20,6 +21,11 @@ abstract class AbstractController
      * @var ConfigurationInterface
      */
     protected $configuration;
+    
+    /*
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
 
     public function __construct(ConfigurationInterface $configuration)
     {
@@ -34,5 +40,15 @@ abstract class AbstractController
     public function getTemplateConfiguration()
     {
         return $this->configuration->getTemplateConfiguration();
+    }
+    
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+    
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
     }
 }
