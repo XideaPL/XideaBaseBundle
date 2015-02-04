@@ -12,6 +12,7 @@ namespace Xidea\Bundle\BaseBundle\Controller;
 use Symfony\Component\Routing\RouterInterface,
     Symfony\Component\EventDispatcher\EventDispatcherInterface,
     Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 
 /**
@@ -38,6 +39,11 @@ abstract class AbstractController
      * @var TranslatorInterface
      */
     protected $translator;
+    
+    /*
+     * @var TemplatingInterface
+     */
+    protected $templating;
 
     public function __construct(ConfigurationInterface $configuration)
     {
@@ -72,6 +78,16 @@ abstract class AbstractController
     public function getRouter()
     {
         return $this->router;
+    }
+    
+    public function setTemplating(EngineInterface $templating)
+    {
+        $this->templating = $templating;
+    }
+    
+    public function getTemplating()
+    {
+        return $this->templating;
     }
     
     public function setTranslator(TranslatorInterface $translator)
