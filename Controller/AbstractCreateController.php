@@ -64,7 +64,7 @@ abstract class AbstractCreateController extends AbstractController
         }
 
         return $this->onCreateView(array(
-                    'object' => $object
+                    'form' => $form->createView()
         ), $request);
     }
 
