@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\Routing\RouterInterface,
     Symfony\Component\EventDispatcher\EventDispatcherInterface,
+    Symfony\Component\EventDispatcher\Event,
     Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface;
