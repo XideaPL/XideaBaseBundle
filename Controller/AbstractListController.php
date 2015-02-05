@@ -39,5 +39,5 @@ abstract class AbstractListController extends AbstractController
     
     abstract protected function onPreList($objects, $request);
     
-    abstract protected function onListView($data, $request);
+    abstract protected function onListView(array $parameters = array(), $request = null);
 }

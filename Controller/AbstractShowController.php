@@ -39,5 +39,5 @@ abstract class AbstractShowController extends AbstractController
     
     abstract protected function onPreShow($object, $request);
     
-    abstract protected function onShowView($data, $request);
+    abstract protected function onShowView(array $parameters = array(), $request = null);
 }

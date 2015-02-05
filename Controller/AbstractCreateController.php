@@ -90,7 +90,7 @@ abstract class AbstractCreateController extends AbstractController
 
     abstract protected function onCreateCompleted($object, $request, $response);
 
-    abstract protected function onCreateView($data, $request);
+    abstract protected function onCreateView(array $parameters = array(), $request = null);
 
-    abstract protected function onCreateFormView($data, $request);
+    abstract protected function onCreateFormView(array $parameters = array(), $request = null);
 }

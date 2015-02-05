@@ -123,4 +123,12 @@ abstract class AbstractController
         
         throw new \LogicException();
     }
+    
+    protected function dispatch($eventName, Event $event = null)
+    {
+        if($this->getEventDispatcher())
+            return $this->getEventDispatcher()->dispatch($eventName, $event);
+        
+        throw new \LogicException();
+    }
 }
