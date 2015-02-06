@@ -35,9 +35,12 @@ abstract class AbstractListController extends AbstractController
         ), $request);
     }
     
+    protected function onListView(array $parameters = array(), $request = null)
+    {
+        return $this->render($this->getTemplateConfiguration()->getTemplate('list'), $parameters);
+    }
+    
     abstract protected function loadObjects(Request $request);
     
     abstract protected function onPreList($objects, $request);
-    
-    abstract protected function onListView(array $parameters = array(), $request = null);
 }

@@ -81,6 +81,16 @@ abstract class AbstractCreateController extends AbstractController
     {
         return $this->formHandler->handle($form, $request);
     }
+    
+    protected function onCreateView(array $parameters = array(), $request = null)
+    {
+        return $this->render($this->getTemplateConfiguration()->getTemplate('create'), $parameters);
+    }
+
+    protected function onCreateFormView(array $parameters = array(), $request = null)
+    {
+        return $this->render($this->getTemplateConfiguration()->getTemplate('create_form'), $parameters);
+    }
 
     abstract protected function createObject();
 
@@ -89,8 +99,4 @@ abstract class AbstractCreateController extends AbstractController
     abstract protected function onCreateSuccess($object, $request);
 
     abstract protected function onCreateCompleted($object, $request, $response);
-
-    abstract protected function onCreateView(array $parameters = array(), $request = null);
-
-    abstract protected function onCreateFormView(array $parameters = array(), $request = null);
 }
