@@ -65,5 +65,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+        
+        return $node;
     }
 }
