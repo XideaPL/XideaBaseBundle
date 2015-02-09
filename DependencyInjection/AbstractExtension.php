@@ -54,6 +54,8 @@ abstract class AbstractExtension extends Extension
             $templates[$name] = $parameters;
         }
         
+        $container->setAlias($prefix.'.template.configuration', $config['configuration']);
+        
         $parameters = array(
             'template.namespace' => $config['namespace'],
             'template.engine' => $config['engine'],

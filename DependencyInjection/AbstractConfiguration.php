@@ -50,6 +50,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->prototype('array')
                 ->children()
+                    ->scalarNode('configuration')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('namespace')->defaultValue($namespace)->end()
                     ->scalarNode('engine')->defaultValue($engine)->end()
                     ->arrayNode('templates')
