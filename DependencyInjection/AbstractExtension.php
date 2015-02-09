@@ -21,8 +21,6 @@ abstract class AbstractExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         list($config, $loader) = $this->setUp($configs, new Configuration(), $container);
-        
-        $this->loadConfigurationSection($config, $container, $loader);
 
         if(isset($config['template']))
             $this->loadTemplateSection($config['template'], $container, $loader);
@@ -49,7 +47,7 @@ abstract class AbstractExtension extends Extension
         }
     }
     
-    protected function loadTemplateSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    protected function loadTemplateSection($prefix, array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
         $templates = array();
         foreach ($config['templates'] as $name => $parameters) {
@@ -62,7 +60,7 @@ abstract class AbstractExtension extends Extension
             'template.templates' => $templates
         );
         foreach($parameters as $name => $value) {
-            $container->setParameter(sprintf('%s.%s', $this->getAlias(), $name), $value);
+            $container->setParameter(sprintf('%s.%s', $prefix, $name), $value);
         }
     }
 

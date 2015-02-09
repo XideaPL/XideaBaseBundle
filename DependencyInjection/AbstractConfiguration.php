@@ -36,42 +36,33 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     
     abstract public function getDefaultTemplateNamespace();
     
-    abstract public function getDefaultTemplates();
-    
     public function getDefaultTemplateEngine()
     {
         return 'twig';
     }
     
-    protected function addConfigurationSection(ArrayNodeDefinition $node)
+    protected function addTemplateNode($namespace, $engine, $templates = array())
     {
+        $builder = new TreeBuilder();
+        $node = $builder->root('template');
+        
         $node
-            ->children()
-                ->scalarNode('configuration')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('template_configuration')->isRequired()->cannotBeEmpty()->end()
-            ->end();
-    }
-    
-    protected function addTemplateSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('template')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('namespace')->defaultValue($this->getDefaultTemplateNamespace())->end()
-                        ->scalarNode('engine')->defaultValue($this->getDefaultTemplateEngine())->end()
-                        ->arrayNode('templates')
-                            ->useAttributeAsKey('name')
-                            ->prototype('array')
-                                ->children()
-                                    ->scalarNode('path')->end()
-                                ->end()
+            ->addDefaultsIfNotSet()
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('namespace')->defaultValue($namespace)->end()
+                    ->scalarNode('engine')->defaultValue($engine)->end()
+                    ->arrayNode('templates')
+                        ->useAttributeAsKey('name')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('path')->end()
                             ->end()
-                            ->defaultValue($this->getDefaultTemplates())
                         ->end()
+                        ->defaultValue($templates)
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 }
