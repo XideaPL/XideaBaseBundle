@@ -8,23 +8,18 @@ use Symfony\Component\HttpKernel\Bundle\Bundle,
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
 abstract class AbstractBundle extends Bundle
-{
-    public function getBundlePrefix()
-    {
-        return 'XideaBaseBundle';
-    }
-    
+{    
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
         
-        $this->addRegisterMappingsPass($container, $this->getBundlePrefix());
+        $this->addRegisterMappingsPass($container, $this->getName());
     }
     
     /**
      * @param ContainerBuilder $container
      */
-    protected function addRegisterMappingsPass(ContainerBuilder $container, $bundlePrefix)
+    protected function addRegisterMappingsPass(ContainerBuilder $container, $bundleName)
     {
         $mappings = $this->getModelMappings();
         
@@ -33,7 +28,7 @@ abstract class AbstractBundle extends Bundle
                 $mappings,
                 array(),
                 false,
-                array($bundlePrefix => $this->getModelNamespace())
+                array($bundleName => $this->getModelNamespace())
             ));
         }
     }
