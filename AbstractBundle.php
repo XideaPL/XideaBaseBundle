@@ -27,7 +27,7 @@ abstract class AbstractBundle extends Bundle
             $container->addCompilerPass(DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 array(),
-                true,
+                false,
                 array($bundleName => $this->getModelNamespace())
             ));
         }
