@@ -35,12 +35,12 @@ abstract class AbstractShowController extends AbstractController
         ), $request);
     }
     
-    protected function onShowView(array $parameters = array(), $request = null)
+    protected function onShowView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->getTemplateConfiguration()->getTemplate('show'), $parameters);
     }
     
     abstract protected function loadObject($id);
     
-    abstract protected function onPreShow($object, $request);
+    abstract protected function onPreShow($object, Request $request);
 }

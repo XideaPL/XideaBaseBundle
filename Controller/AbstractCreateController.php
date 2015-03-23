@@ -9,7 +9,8 @@
 
 namespace Xidea\Bundle\BaseBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface,
     Xidea\Bundle\BaseBundle\Form\Handler\FormHandlerInterface;
 
@@ -77,26 +78,26 @@ abstract class AbstractCreateController extends AbstractController
         ), $request);
     }
 
-    protected function handleForm($form, $request)
+    protected function handleForm($form, Request $request)
     {
         return $this->formHandler->handle($form, $request);
     }
     
-    protected function onCreateView(array $parameters = array(), $request = null)
+    protected function onCreateView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->getTemplateConfiguration()->getTemplate('create'), $parameters);
     }
 
-    protected function onCreateFormView(array $parameters = array(), $request = null)
+    protected function onCreateFormView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->getTemplateConfiguration()->getTemplate('create_form'), $parameters);
     }
 
     abstract protected function createObject();
 
-    abstract protected function onPreCreate($object, $request);
+    abstract protected function onPreCreate($object, Request $request);
 
-    abstract protected function onCreateSuccess($object, $request);
+    abstract protected function onCreateSuccess($object, Request $request);
 
-    abstract protected function onCreateCompleted($object, $request, $response);
+    abstract protected function onCreateCompleted($object, Request $request, Response $response);
 }
