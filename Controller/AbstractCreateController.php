@@ -20,28 +20,28 @@ use Xidea\Bundle\BaseBundle\ConfigurationInterface,
 abstract class AbstractCreateController extends AbstractController
 {
     /*
-     * @var object
+     * @var model
      */
-    protected $objectManager;
+    protected $modelManager;
 
     /*
      * @var ProductFormHandlerInterface
      */
     protected $formHandler;
 
-    public function __construct(ConfigurationInterface $configuration, $objectManager, FormHandlerInterface $formHandler)
+    public function __construct(ConfigurationInterface $configuration, $modelManager, FormHandlerInterface $formHandler)
     {
         parent::__construct($configuration);
 
-        $this->objectManager = $objectManager;
+        $this->modelManager = $modelManager;
         $this->formHandler = $formHandler;
     }
 
-    public function getForm($object = null)
+    public function getForm($model = null)
     {
         $form = $this->formHandler->createForm();
-        if (null !== $object) {
-            $form->setData($object);
+        if (null !== $model) {
+            $form->setData($model);
         }
 
         return $form;
@@ -49,18 +49,18 @@ abstract class AbstractCreateController extends AbstractController
 
     public function createAction(Request $request)
     {
-        $object = $this->createObject();
+        $model = $this->createModel();
 
-        if (null !== $response = $this->onPreCreate($object, $request)) {
+        if (null !== $response = $this->onPreCreate($model, $request)) {
             return $response;
         }
 
-        $form = $this->getForm($object);
+        $form = $this->getForm($model);
         if ($this->handleForm($form, $request)) {
-            if ($this->objectManager->save($object)) {
-                $response = $this->onCreateSuccess($object, $request);
+            if ($this->modelManager->save($model)) {
+                $response = $this->onCreateSuccess($model, $request);
 
-                return $this->onCreateCompleted($object, $request, $response);
+                return $this->onCreateCompleted($model, $request, $response);
             }
         }
 
@@ -93,11 +93,11 @@ abstract class AbstractCreateController extends AbstractController
         return $this->render($this->getTemplateConfiguration()->getTemplate('create_form'), $parameters);
     }
 
-    abstract protected function createObject();
+    abstract protected function createModel();
 
-    abstract protected function onPreCreate($object, Request $request);
+    abstract protected function onPreCreate($model, Request $request);
 
-    abstract protected function onCreateSuccess($object, Request $request);
+    abstract protected function onCreateSuccess($model, Request $request);
 
-    abstract protected function onCreateCompleted($object, Request $request, Response $response);
+    abstract protected function onCreateCompleted($model, Request $request, Response $response);
 }

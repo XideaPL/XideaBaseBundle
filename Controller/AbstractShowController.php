@@ -24,14 +24,14 @@ abstract class AbstractShowController extends AbstractController
     
     public function showAction($id, Request $request)
     {
-        $object = $this->loadObject($id);
+        $model = $this->loadModel($id);
         
-        if (null !== $response = $this->onPreShow($object, $request)) {
+        if (null !== $response = $this->onPreShow($model, $request)) {
             return $response;
         }
         
         return $this->onShowView(array(
-            'object' => $object
+            'model' => $model
         ), $request);
     }
     
@@ -40,7 +40,7 @@ abstract class AbstractShowController extends AbstractController
         return $this->render($this->getTemplateConfiguration()->getTemplate('show'), $parameters);
     }
     
-    abstract protected function loadObject($id);
+    abstract protected function loadModel($id);
     
-    abstract protected function onPreShow($object, Request $request);
+    abstract protected function onPreShow($model, Request $request);
 }

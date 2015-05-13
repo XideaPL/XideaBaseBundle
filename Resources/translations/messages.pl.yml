@@ -1,9 +1,9 @@
-object:
-    label: Obiekt
+model:
+    label: Model
 
 form:
     required_fields: Pola z * są wymagane.
     
-object_form:
+model_form:
     create:
         submit: Utwórz

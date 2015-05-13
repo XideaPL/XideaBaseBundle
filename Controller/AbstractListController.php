@@ -24,14 +24,14 @@ abstract class AbstractListController extends AbstractController
 
     public function listAction(Request $request)
     {
-        $objects = $this->loadObjects($request);
+        $models = $this->loadModels($request);
         
-        if (null !== $response = $this->onPreList($objects, $request)) {
+        if (null !== $response = $this->onPreList($models, $request)) {
             return $response;
         }
         
         return $this->onListView(array(
-            'objects' => $objects
+            'models' => $models
         ), $request);
     }
     
@@ -40,7 +40,7 @@ abstract class AbstractListController extends AbstractController
         return $this->render($this->getTemplateConfiguration()->getTemplate('list'), $parameters);
     }
     
-    abstract protected function loadObjects(Request $request);
+    abstract protected function loadModels(Request $request);
     
-    abstract protected function onPreList($objects, Request $request);
+    abstract protected function onPreList($models, Request $request);
 }
