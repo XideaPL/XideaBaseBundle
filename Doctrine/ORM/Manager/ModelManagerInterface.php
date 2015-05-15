@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Doctrine\ORM;
+namespace Xidea\Bundle\BaseBundle\Doctrine\ORM\Manager;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
