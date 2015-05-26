@@ -17,6 +17,15 @@ use Xidea\Bundle\BaseBundle\ConfigurationInterface;
  */
 abstract class AbstractListController extends AbstractController
 {
+    /*
+     * @var string
+     */
+    protected $listTemplate = 'list';
+    
+    /**
+     * 
+     * @param ConfigurationInterface $configuration
+     */
     public function __construct(ConfigurationInterface $configuration)
     {
         parent::__construct($configuration);
@@ -37,7 +46,7 @@ abstract class AbstractListController extends AbstractController
     
     protected function onListView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate('list'), $parameters);
+        return $this->render($this->getTemplateConfiguration()->getTemplate($this->listTemplate), $parameters);
     }
     
     abstract protected function loadModels(Request $request);

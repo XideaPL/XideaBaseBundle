@@ -17,6 +17,11 @@ use Xidea\Bundle\BaseBundle\ConfigurationInterface;
  */
 abstract class AbstractShowController extends AbstractController
 {
+    /*
+     * @var string
+     */
+    protected $showTemplate = 'show';
+    
     public function __construct(ConfigurationInterface $configuration)
     {
         parent::__construct($configuration);
@@ -37,7 +42,7 @@ abstract class AbstractShowController extends AbstractController
     
     protected function onShowView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate('show'), $parameters);
+        return $this->render($this->getTemplateConfiguration()->getTemplate($this->showTemplate), $parameters);
     }
     
     abstract protected function loadModel($id);

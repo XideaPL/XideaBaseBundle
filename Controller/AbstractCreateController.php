@@ -28,7 +28,23 @@ abstract class AbstractCreateController extends AbstractController
      * @var ProductFormHandlerInterface
      */
     protected $formHandler;
+    
+    /*
+     * @var string
+     */
+    protected $createTemplate = 'create';
+    
+    /*
+     * @var string
+     */
+    protected $createFormTemplate = 'create_form';
 
+    /**
+     * 
+     * @param ConfigurationInterface $configuration
+     * @param type $modelManager
+     * @param FormHandlerInterface $formHandler
+     */
     public function __construct(ConfigurationInterface $configuration, $modelManager, FormHandlerInterface $formHandler)
     {
         parent::__construct($configuration);
@@ -85,12 +101,12 @@ abstract class AbstractCreateController extends AbstractController
     
     protected function onCreateView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate('create'), $parameters);
+        return $this->render($this->getTemplateConfiguration()->getTemplate($this->createTemplate), $parameters);
     }
 
     protected function onCreateFormView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate('create_form'), $parameters);
+        return $this->render($this->getTemplateConfiguration()->getTemplate($this->createFormTemplate), $parameters);
     }
 
     abstract protected function createModel();
