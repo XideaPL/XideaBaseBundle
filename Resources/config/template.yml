@@ -1,0 +1,13 @@
+parameters:
+    xidea_base.template.base_configuration.class: Xidea\Bundle\BaseBundle\BaseTemplateConfiguration
+    xidea_base.twig.template.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\TemplateExtension
+
+services:
+    xidea_base.template.base_configuration:
+        class: %xidea_base.template.base_configuration.class%
+    xidea_base.twig.template.extension:
+        class: %xidea_base.twig.template.extension.class%
+        arguments:
+            - @service_container
+        tags:
+            - { name: twig.extension }

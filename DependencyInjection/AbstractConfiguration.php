@@ -41,6 +41,27 @@ abstract class AbstractConfiguration implements ConfigurationInterface
         return 'twig';
     }
     
+    protected function addTemplateSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), array(
+                    'list' => array(
+                        'path' => 'Model\List:list'
+                    ),
+                    'show' => array(
+                        'path' => 'Model\Show:show'
+                    ),
+                    'create' => array(
+                        'path' => 'Model\Create:create'
+                    ),
+                    'create_form' => array(
+                        'path' => 'Model\Main:form'
+                    )
+                )))
+            ->end();
+    }
+    
     protected function addTemplateNode($namespace, $engine, $templates = array())
     {
         $builder = new TreeBuilder();
