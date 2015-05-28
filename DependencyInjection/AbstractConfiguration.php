@@ -49,7 +49,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
             ->end();
     }
     
-    protected function addTemplateNode($namespace, $engine, $templates = array())
+    protected function addTemplateNode($namespace, $engine, $templates = array(), $namespacedPaths = false)
     {
         $builder = new TreeBuilder();
         $node = $builder->root('template');
@@ -61,7 +61,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
                 ->scalarNode('namespace')->defaultValue($namespace)->end()
                 ->scalarNode('engine')->defaultValue($engine)->end()
                 ->booleanNode('namespaced_paths')
-                    ->defaultFalse()
+                    ->defaultValue($namespacedPaths)
                 ->end()
                 ->arrayNode('templates')
                     ->useAttributeAsKey('name')

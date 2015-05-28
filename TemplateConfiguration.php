@@ -32,7 +32,7 @@ class TemplateConfiguration implements TemplateConfigurationInterface
     /**
      * @var bool
      */
-    protected $namespacedPaths = true;
+    protected $namespacedPaths = false;
 
     /**
      * 
