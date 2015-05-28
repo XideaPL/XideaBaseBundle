@@ -67,6 +67,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('namespace')->defaultNull()->validate()->ifNull()->thenUnset()->end()->end()
                             ->scalarNode('path')->end()
                         ->end()
                     ->end()

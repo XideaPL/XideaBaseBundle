@@ -49,7 +49,7 @@ abstract class AbstractExtension extends Extension
     
     protected function loadTemplateSection($prefix, array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
-        $templates = array_merge_recursive($this->getDefaultTemplates(), $config['templates']);
+        $templates = array_merge($this->getDefaultTemplates(), $config['templates']);
         
         $container->setAlias($prefix.'.template.configuration', $config['configuration']);
         
