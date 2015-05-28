@@ -8,6 +8,6 @@ services:
     xidea_base.twig.template.extension:
         class: %xidea_base.twig.template.extension.class%
         arguments:
-            - @service_container
+            - @xidea_base.template.base_configuration
         tags:
             - { name: twig.extension }

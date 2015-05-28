@@ -28,12 +28,40 @@ class TemplateConfiguration implements TemplateConfigurationInterface
      * @var string
      */
     protected $engine;
+    
+    /**
+     * @var bool
+     */
+    protected $namespacedPaths = true;
 
+    /**
+     * 
+     * @param string $namespace
+     * @param string $templates
+     * @param string $engine
+     */
     public function __construct($namespace, $templates, $engine = 'twig')
     {
         $this->namespace = $namespace;
         $this->templates = $templates;
         $this->engine = $engine;
+    }
+    
+    /**
+     * 
+     * @param bool $namespacedPaths
+     */
+    public function setNamespacedPaths($namespacedPaths)
+    {
+        $this->namespacedPaths = $namespacedPaths;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getNamespacedPaths()
+    {
+        return $this->namespacedPaths;
     }
 
     /**
@@ -41,15 +69,16 @@ class TemplateConfiguration implements TemplateConfigurationInterface
      */
     public function getTemplate($name, $format = 'html')
     {
-        return sprintf('%s:%s.%s.%s', $this->namespace ?: ':', $this->getTemplatePath($name), $format, $this->engine);
-    }
-    
-    protected function getTemplatePath($name)
-    {
         if(isset($this->templates[$name])) {
             $template = $this->templates[$name];
             
-            return $template['path'];
+            if(isset($template['path'])) {
+                $separator = $this->namespacedPaths ? '/' : ':';
+                $namespace = isset($template['namespace']) ? $template['namespace'] : $this->namespace;
+                $templateNamespace = $namespace ? sprintf('%s%s', $namespace, $separator) : '';
+                
+                return sprintf('%s%s.%s.%s', $templateNamespace, $template['path'], $format, $this->engine);
+            }
         }
         
         throw new \Exception;

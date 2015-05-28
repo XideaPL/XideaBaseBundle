@@ -15,9 +15,20 @@ namespace Xidea\Bundle\BaseBundle;
 interface TemplateConfigurationInterface
 {
     /**
+     * 
+     * @param bool $namespacedPaths
+     */
+    function setNamespacedPaths($namespacedPaths);
+    
+    /**
+     * @return bool
+     */
+    function getNamespacedPaths();
+    
+    /**
      * Returns a template.
      *
      * @return string
      */
-    public function getTemplate($name, $format = 'html');
+    function getTemplate($name, $format = 'html');
 }

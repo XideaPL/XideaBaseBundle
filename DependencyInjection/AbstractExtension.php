@@ -59,6 +59,7 @@ abstract class AbstractExtension extends Extension
         $parameters = array(
             'template.namespace' => $config['namespace'],
             'template.engine' => $config['engine'],
+            'template.namespaced_paths' => $config['namespaced_paths'],
             'template.templates' => $templates
         );
         foreach($parameters as $name => $value) {

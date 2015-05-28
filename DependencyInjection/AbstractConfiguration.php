@@ -45,20 +45,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), array(
-                    'list' => array(
-                        'path' => 'Model\List:list'
-                    ),
-                    'show' => array(
-                        'path' => 'Model\Show:show'
-                    ),
-                    'create' => array(
-                        'path' => 'Model\Create:create'
-                    ),
-                    'create_form' => array(
-                        'path' => 'Model\Main:form'
-                    )
-                )))
+                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), array()))
             ->end();
     }
     
@@ -73,6 +60,9 @@ abstract class AbstractConfiguration implements ConfigurationInterface
                 ->scalarNode('configuration')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('namespace')->defaultValue($namespace)->end()
                 ->scalarNode('engine')->defaultValue($engine)->end()
+                ->booleanNode('namespaced_paths')
+                    ->defaultFalse()
+                ->end()
                 ->arrayNode('templates')
                     ->useAttributeAsKey('name')
                     ->prototype('array')

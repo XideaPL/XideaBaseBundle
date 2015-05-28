@@ -20,7 +20,7 @@ class TemplateConfigurationCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $configuration = $container->getAlias('xidea_base.template.base_configuration');
+        $configuration = 'xidea_base.template.base_configuration';
         
         if (!$container->hasDefinition($configuration)) {
             return;
