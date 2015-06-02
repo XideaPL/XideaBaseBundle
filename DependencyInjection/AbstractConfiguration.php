@@ -45,11 +45,11 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), array()))
+                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), [], true))
             ->end();
     }
     
-    protected function addTemplateNode($namespace, $engine, $templates = array(), $namespacedPaths = false)
+    protected function addTemplateNode($namespace, $engine, $templates = [], $namespacedPaths = false)
     {
         $builder = new TreeBuilder();
         $node = $builder->root('template');

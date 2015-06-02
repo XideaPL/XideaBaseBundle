@@ -49,6 +49,10 @@ abstract class AbstractController
      */
     protected $templating;
 
+    /**
+     * 
+     * @param ConfigurationInterface $configuration
+     */
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
