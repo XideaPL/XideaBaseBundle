@@ -22,30 +22,27 @@ $.widget( 'xidea.formcollection', {
         var $addButton = $(this.options.addButton);
         this.element.append($(document.createElement(this.options.formTag)).append($addButton));
         
+        var $widget = this;
         $addButton.on('click', function(e) {
             e.preventDefault();
-            this.addForm($addButton);
+            $widget._addForm($addButton);
         });
     },
     _createRemoveButton: function($container) {
         var $removeButton = $(this.options.removeButton);
         $container.append($removeButton);
 
-        var $widget = this;
         $removeButton.on('click', function(e) {
             e.preventDefault();
             $container.remove();
-            $widget.index -= 1;
         });
     },
     _addForm: function($addButton) {
-        var form = this.options.prototype.replace('__name__/g', this.index);
+        var form = this.options.prototype.replace(/__name__/g, this.index);
         this.index += 1;
-        
-        var $form = $(this.options.formContainer).append(form);
+
+        var $form = $(document.createElement(this.options.formTag)).append(form);
         $addButton.before($form);
         this._createRemoveButton($form);
     }
 });
-
-
