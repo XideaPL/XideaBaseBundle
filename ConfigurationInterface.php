@@ -15,9 +15,16 @@ namespace Xidea\Bundle\BaseBundle;
 interface ConfigurationInterface
 {
     /**
+     * Returns the code related to the configuration.
+     * 
+     * @return string
+     */
+    function getCode();
+    
+    /**
      * Returns a template configuration.
      *
-     * @return \Xidea\Bundle\BaseBundle\TemplateConfigurationInterface
+     * @return \Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface
      */
-    public function getTemplateConfiguration();
+    function getTemplateConfiguration();
 }

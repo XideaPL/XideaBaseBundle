@@ -1,0 +1,6 @@
+parameters:
+    xidea_base.configuration.pool.class: Xidea\Bundle\BaseBundle\ConfigurationPool
+
+services:
+    xidea_base.configuration.pool:
+        class: %xidea_base.configuration.pool.class%

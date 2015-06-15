@@ -53,7 +53,7 @@ abstract class AbstractCreateController extends AbstractController
         $this->formHandler = $formHandler;
     }
 
-    public function getForm($model = null)
+    public function createForm($model = null)
     {
         $form = $this->formHandler->createForm();
         if (null !== $model) {
@@ -71,7 +71,7 @@ abstract class AbstractCreateController extends AbstractController
             return $response;
         }
 
-        $form = $this->getForm($model);
+        $form = $this->createForm($model);
         if ($this->handleForm($form, $request)) {
             if ($this->modelManager->save($model)) {
                 $response = $this->onCreateSuccess($model, $request);
@@ -87,7 +87,7 @@ abstract class AbstractCreateController extends AbstractController
 
     public function createFormAction(Request $request)
     {
-        $form = $this->getForm();
+        $form = $this->createForm();
 
         return $this->onCreateFormView(array(
                     'form' => $form->createView()
@@ -101,12 +101,12 @@ abstract class AbstractCreateController extends AbstractController
     
     protected function onCreateView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate($this->createTemplate), $parameters);
+        return $this->render($this->createTemplate, $parameters);
     }
 
     protected function onCreateFormView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate($this->createFormTemplate), $parameters);
+        return $this->render($this->createFormTemplate, $parameters);
     }
 
     abstract protected function createModel();

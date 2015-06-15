@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcherInterface,
     Symfony\Component\EventDispatcher\Event,
     Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Xidea\Bundle\BaseBundle\Template\TemplateManagerInterface;
 use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 
 /**
@@ -24,9 +24,13 @@ use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 abstract class AbstractController
 {
     /*
+     * @var string
+     */
+    protected $context = 'xidea_base';
+    
+    /*
      * @var ConfigurationInterface
      */
-
     protected $configuration;
 
     /*
@@ -45,9 +49,9 @@ abstract class AbstractController
     protected $translator;
 
     /*
-     * @var TemplatingInterface
+     * @var TemplateManagerInterface
      */
-    protected $templating;
+    protected $templateManager;
 
     /**
      * 
@@ -61,11 +65,6 @@ abstract class AbstractController
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    public function getTemplateConfiguration()
-    {
-        return $this->configuration->getTemplateConfiguration();
     }
 
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
@@ -88,14 +87,16 @@ abstract class AbstractController
         return $this->router;
     }
 
-    public function setTemplating(EngineInterface $templating)
+    public function setTemplateManager(TemplateManagerInterface $templateManager)
     {
-        $this->templating = $templating;
+        $this->templateManager = $templateManager;
+        
+        $this->templateManager->setContext($this->context);
     }
 
-    public function getTemplating()
+    public function getTemplateManager()
     {
-        return $this->templating;
+        return $this->templateManager;
     }
 
     public function setTranslator(TranslatorInterface $translator)
@@ -123,8 +124,8 @@ abstract class AbstractController
 
     protected function render($view, array $parameters = array(), Response $response = null)
     {
-        if($this->getTemplating())
-            return $this->getTemplating()->renderResponse($view, $parameters, $response);
+        if($this->getTemplateManager())
+            return $this->getTemplateManager()->renderResponse($view, $parameters, $response);
         
         throw new \LogicException();
     }

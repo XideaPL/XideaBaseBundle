@@ -46,7 +46,7 @@ abstract class AbstractListController extends AbstractController
     
     protected function onListView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate($this->listTemplate), $parameters);
+        return $this->render($this->listTemplate, $parameters);
     }
     
     abstract protected function loadModels(Request $request);

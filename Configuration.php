@@ -15,13 +15,27 @@ namespace Xidea\Bundle\BaseBundle;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @var \Xidea\Bundle\BaseBundle\TemplateConfigurationInterface
+     * @var string
+     */
+    protected $code;
+    
+    /**
+     * @var \Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface
      */
     protected $templateConfiguration;
 
-    public function __construct($templateConfiguration)
+    public function __construct($code, $templateConfiguration)
     {
+        $this->code = $code;
         $this->templateConfiguration = $templateConfiguration;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**

@@ -16,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class TemplateConfigurationCompilerPass implements CompilerPassInterface
+class ConfigurationPoolCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $configuration = 'xidea_base.template.base_configuration';
+        $configuration = 'xidea_base.configuration.pool';
         
         if (!$container->hasDefinition($configuration)) {
             return;
@@ -31,14 +31,14 @@ class TemplateConfigurationCompilerPass implements CompilerPassInterface
         );
 
         $taggedServices = $container->findTaggedServiceIds(
-            'xidea_base.template.configuration'
+            'xidea_base.configuration'
         );
         
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition->addMethodCall(
                     'addConfiguration',
-                    array($attributes['alias'], new Reference($id))
+                    array(new Reference($id))
                 );
             }
         }

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle;
+namespace Xidea\Bundle\BaseBundle\Template;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -48,8 +48,7 @@ class TemplateConfiguration implements TemplateConfigurationInterface
     }
     
     /**
-     * 
-     * @param bool $namespacedPaths
+     * @inheritDoc
      */
     public function setNamespacedPaths($namespacedPaths)
     {
@@ -57,7 +56,7 @@ class TemplateConfiguration implements TemplateConfigurationInterface
     }
     
     /**
-     * @return bool
+     * @inheritDoc
      */
     public function getNamespacedPaths()
     {

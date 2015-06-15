@@ -42,7 +42,7 @@ abstract class AbstractShowController extends AbstractController
     
     protected function onShowView(array $parameters = array(), Request $request = null)
     {
-        return $this->render($this->getTemplateConfiguration()->getTemplate($this->showTemplate), $parameters);
+        return $this->render($this->showTemplate, $parameters);
     }
     
     abstract protected function loadModel($id);

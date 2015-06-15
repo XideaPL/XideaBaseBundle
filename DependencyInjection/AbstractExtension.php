@@ -35,18 +35,6 @@ abstract class AbstractExtension extends Extension
         return array($config, $loader);
     }
     
-    protected function loadConfigurationSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
-    {
-        $services = array(
-            'configuration',
-            'template_configuration'
-        );
-        foreach($services as $service) {
-            if(isset($config[$service]))
-                $container->setAlias(sprintf('%s.%s', $this->getAlias(), $service), $config[$service]);
-        }
-    }
-    
     protected function loadTemplateSection($prefix, array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
         $templates = array_merge($this->getDefaultTemplates(), $config['templates']);
