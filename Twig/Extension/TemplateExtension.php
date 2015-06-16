@@ -34,7 +34,7 @@ class TemplateExtension extends \Twig_Extension {
         $configuration = $this->configurationPool->getConfiguration($context);
         
         if(is_object($configuration)) {
-            return $configuration->getTemplateConfiguration->getTemplate($name, $format);
+            return $configuration->getTemplateConfiguration()->getTemplate($name, $format);
         }
         
         throw new \LogicException;

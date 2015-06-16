@@ -15,11 +15,6 @@ namespace Xidea\Bundle\BaseBundle\Template;
 interface TemplateConfigurationInterface
 {
     /**
-     * @return bool
-     */
-    function getNamespacedPaths();
-    
-    /**
      * 
      * @param bool $namespacedPaths
      */

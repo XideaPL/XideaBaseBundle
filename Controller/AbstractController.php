@@ -24,11 +24,6 @@ use Xidea\Bundle\BaseBundle\ConfigurationInterface;
 abstract class AbstractController
 {
     /*
-     * @var string
-     */
-    protected $context = 'xidea_base';
-    
-    /*
      * @var ConfigurationInterface
      */
     protected $configuration;
@@ -91,7 +86,7 @@ abstract class AbstractController
     {
         $this->templateManager = $templateManager;
         
-        $this->templateManager->setContext($this->context);
+        $this->templateManager->setContext($this->configuration->getCode());
     }
 
     public function getTemplateManager()
