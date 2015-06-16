@@ -1,10 +1,10 @@
 parameters:
-    xidea_base.template.manager.class: Xidea\Bundle\BaseBundle\Template\TemplateManager
+    xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\TemplateManager
     xidea_base.twig.template.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\TemplateExtension
 
 services:
-    xidea_base.template.manager:
-        class: %xidea_base.template.manager.class%
+    xidea_base.template_manager:
+        class: %xidea_base.template_manager.class%
         arguments:
             - @xidea_base.configuration.pool
             - @templating
