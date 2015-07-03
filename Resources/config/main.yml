@@ -1,11 +1,15 @@
 parameters:
     xidea_base.configuration.pool.class: Xidea\Bundle\BaseBundle\ConfigurationPool
+    xidea_base.template.configuration.pool.class: Xidea\Bundle\BaseBundle\TemplateConfigurationPool
     xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\TemplateManager
 
 services:
     xidea_base.configuration.pool:
         class: %xidea_base.configuration.pool.class%
+    xidea_base.template.configuration.pool:
+        class: %xidea_base.template.configuration.pool.class%
     xidea_base.template_manager:
         class: %xidea_base.template_manager.class%
         arguments:
+            - @xidea_base.template.configuration.pool
             - @templating

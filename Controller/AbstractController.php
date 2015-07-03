@@ -85,8 +85,6 @@ abstract class AbstractController
     public function setTemplateManager(TemplateManagerInterface $templateManager)
     {
         $this->templateManager = $templateManager;
-        
-        $this->templateManager->setContext($this->configuration->getCode());
     }
 
     public function getTemplateManager()

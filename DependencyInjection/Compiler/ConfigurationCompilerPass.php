@@ -16,18 +16,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class ConfigurationPoolCompilerPass implements CompilerPassInterface
+class ConfigurationCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $configuration = 'xidea_base.configuration.pool';
+        $pool = 'xidea_base.configuration.pool';
         
-        if (!$container->hasDefinition($configuration)) {
+        if (!$container->hasDefinition($pool)) {
             return;
         }
 
         $definition = $container->getDefinition(
-            $configuration
+            $pool
         );
 
         $taggedServices = $container->findTaggedServiceIds(

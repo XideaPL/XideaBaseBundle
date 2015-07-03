@@ -11,22 +11,17 @@ namespace Xidea\Bundle\BaseBundle\Template;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface;
+use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPoolInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 class TemplateManager implements TemplateManagerInterface
 {
-    /**
-     * @var array
+    /*
+     * @var TemplateConfigurationPoolInterface
      */
-    protected $configurationScopes;
-    
-    /**
-     * @var TemplateConfigurationInterface[]
-     */
-    protected $configurations;
+    protected $configurationPool;
     
     /**
      * @var EngineInterface
@@ -37,28 +32,10 @@ class TemplateManager implements TemplateManagerInterface
      * 
      * @param EngineInterface $templating
      */
-    public function __construct(EngineInterface $templating)
+    public function __construct(TemplateConfigurationPoolInterface $configurationPool, EngineInterface $templating)
     {
+        $this->configurationPool = $configurationPool;
         $this->templating = $templating;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function addConfiguration(TemplateConfigurationInterface $configuration, $priority = 0)
-    {
-        $this->configurationScopes[$configuration->getScope()] = $priority;
-        $this->configurations[$configuration->getScope()] = $configuration;
-        
-        $this->sortConfigurations();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getConfiguration($scope)
-    {
-        return isset($this->configurations[$scope]) ? $this->configurations[$scope] : null;
     }
 
     /**
@@ -68,7 +45,7 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->render($this->getTemplate($name, $format), $parameters);
+        return $this->templating->render($this->configurationPool->getTemplate($name, $format), $parameters);
     }
     
     /**
@@ -78,46 +55,6 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->renderResponse($this->getTemplate($name, $format), $parameters, $response);
-    }
-    
-    /*
-     * 
-     */
-    protected function getTemplate($name, $format)
-    {
-        $resolveTemplate = function($configuration, $name, $format) {
-            if(is_object($configuration)) {
-                return $configuration->getTemplate($name, $format);
-            }
-            return '';
-        };
-        
-        if(strpos($name, '@') !== false) {
-            $templateData = explode('@', $name);
-            $configuration = $this->getConfiguration($templateData[1]);
-            $template = call_user_func($resolveTemplate, $configuration, $templateData[0], $format);
-            if($template) {
-                return $template;
-            }
-        } else {
-            foreach($this->configurationScopes as $scope => $priority) {
-                $configuration = $this->getConfiguration($scope);
-                $template = call_user_func($resolveTemplate, $configuration, $name, $format);
-                if($template) {
-                    return $template;
-                }
-            }
-        }
-        
-        throw new \Exception;
-    }
-    
-    /*
-     * 
-     */
-    protected function sortConfigurations()
-    {
-        return arsort($this->configurationScopes);
+        return $this->templating->renderResponse($this->configurationPool->getTemplate($name, $format), $parameters, $response);
     }
 }

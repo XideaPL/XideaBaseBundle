@@ -20,14 +20,14 @@ class TemplateConfigurationCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $manager = 'xidea_base.template_manager';
+        $pool = 'xidea_base.template.configuration.pool';
         
-        if (!$container->hasDefinition($manager)) {
+        if (!$container->hasDefinition($pool)) {
             return;
         }
 
         $definition = $container->getDefinition(
-            $manager
+            $pool
         );
 
         $taggedServices = $container->findTaggedServiceIds(

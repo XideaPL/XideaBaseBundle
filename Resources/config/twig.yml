@@ -5,6 +5,6 @@ services:
     xidea_base.twig.template.extension:
         class: %xidea_base.twig.template.extension.class%
         arguments:
-            - @xidea_base.configuration.pool
+            - @xidea_base.template.configuration.pool
         tags:
             - { name: twig.extension }
