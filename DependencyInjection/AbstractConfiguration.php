@@ -23,18 +23,21 @@ abstract class AbstractConfiguration implements ConfigurationInterface
         $this->alias = $alias;
     }
     
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+    
     /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->alias);
+        $rootNode = $treeBuilder->root($this->getAlias());
 
         return $treeBuilder;
     }
-    
-    abstract public function getDefaultTemplateNamespace();
     
     public function getDefaultTemplateEngine()
     {
@@ -45,37 +48,24 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->append($this->addTemplateNode($this->getDefaultTemplateNamespace(), $this->getDefaultTemplateEngine(), [], true))
-            ->end();
-    }
-    
-    protected function addTemplateNode($namespace, $engine, $templates = [], $namespacedPaths = false)
-    {
-        $builder = new TreeBuilder();
-        $node = $builder->root('template');
-        
-        $node
-            ->addDefaultsIfNotSet()
-            ->children()
-                ->scalarNode('configuration')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('namespace')->defaultValue($namespace)->end()
-                ->scalarNode('engine')->defaultValue($engine)->end()
-                ->booleanNode('namespaced_paths')
-                    ->defaultValue($namespacedPaths)
-                ->end()
-                ->arrayNode('templates')
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('namespace')->defaultNull()->validate()->ifNull()->thenUnset()->end()->end()
-                            ->scalarNode('path')->end()
+                ->arrayNode('template')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('scope')->defaultValue($this->getAlias())->end()
+                        ->scalarNode('configuration')->defaultValue(sprintf('%s.template.configuration.default', $this->getAlias()))->end()
+                        ->scalarNode('engine')->defaultValue($this->getDefaultTemplateEngine())->end()
+                        ->scalarNode('priority')->defaultValue(0)->end()
+                        ->arrayNode('templates')
+                            ->useAttributeAsKey('name')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('path')->end()
+                                ->end()
+                            ->end()
+                            ->defaultValue([])
                         ->end()
                     ->end()
-                    ->defaultValue($templates)
                 ->end()
-            ->end()
-        ;
-        
-        return $node;
+            ->end();
     }
 }

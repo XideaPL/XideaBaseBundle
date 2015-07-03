@@ -20,11 +20,4 @@ interface ConfigurationInterface
      * @return string
      */
     function getCode();
-    
-    /**
-     * Returns a template configuration.
-     *
-     * @return \Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface
-     */
-    function getTemplateConfiguration();
 }

@@ -16,14 +16,25 @@ interface TemplateConfigurationInterface
 {
     /**
      * 
-     * @param bool $namespacedPaths
+     * @param string $scope
      */
-    function setNamespacedPaths($namespacedPaths);
+    function setScope($scope);
     
     /**
-     * @return bool
+     * @return string
      */
-    function getNamespacedPaths();
+    function getScope();
+    
+    /**
+     * 
+     * @param string $engine
+     */
+    function setEngine($engine);
+    
+    /**
+     * @return string
+     */
+    function getEngine();
     
     /**
      * Returns a template.

@@ -9,9 +9,9 @@
 
 namespace Xidea\Bundle\BaseBundle\Template;
 
-use Xidea\Bundle\BaseBundle\ConfigurationPoolInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -19,14 +19,14 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 class TemplateManager implements TemplateManagerInterface
 {
     /**
-     * @var string
-     */
-    protected $context = 'xidea_base';
-
-    /**
      * @var array
      */
-    protected $configurationPool;
+    protected $configurationScopes;
+    
+    /**
+     * @var TemplateConfigurationInterface[]
+     */
+    protected $configurations;
     
     /**
      * @var EngineInterface
@@ -35,38 +35,30 @@ class TemplateManager implements TemplateManagerInterface
 
     /**
      * 
-     * @param ConfigurationPoolInterface $configurationPool
+     * @param EngineInterface $templating
      */
-    public function __construct(ConfigurationPoolInterface $configurationPool, EngineInterface $templating)
+    public function __construct(EngineInterface $templating)
     {
-        $this->configurationPool = $configurationPool;
         $this->templating = $templating;
     }
     
     /**
      * @inheritDoc
      */
-    public function setContext($context)
+    public function addConfiguration(TemplateConfigurationInterface $configuration, $priority = 0)
     {
-        $this->context = $context;
+        $this->configurationScopes[$configuration->getScope()] = $priority;
+        $this->configurations[$configuration->getScope()] = $configuration;
         
-        return $this;
+        $this->sortConfigurations();
     }
-    
+
     /**
      * @inheritDoc
      */
-    public function getContext()
+    public function getConfiguration($scope)
     {
-        return $this->context;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getConfiguration()
-    {
-        return $this->configurationPool->getConfiguration($this->getContext())->getTemplateConfiguration();
+        return isset($this->configurations[$scope]) ? $this->configurations[$scope] : null;
     }
 
     /**
@@ -76,7 +68,7 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->render($this->getConfiguration()->getTemplate($name, $format), $parameters);
+        return $this->templating->render($this->getTemplate($name, $format), $parameters);
     }
     
     /**
@@ -86,6 +78,46 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->renderResponse($this->getConfiguration()->getTemplate($name, $format), $parameters, $response);
+        return $this->templating->renderResponse($this->getTemplate($name, $format), $parameters, $response);
+    }
+    
+    /*
+     * 
+     */
+    protected function getTemplate($name, $format)
+    {
+        $resolveTemplate = function($configuration, $name, $format) {
+            if(is_object($configuration)) {
+                return $configuration->getTemplate($name, $format);
+            }
+            return '';
+        };
+        
+        if(strpos($name, '@') !== false) {
+            $templateData = explode('@', $name);
+            $configuration = $this->getConfiguration($templateData[1]);
+            $template = call_user_func($resolveTemplate, $configuration, $templateData[0], $format);
+            if($template) {
+                return $template;
+            }
+        } else {
+            foreach($this->configurationScopes as $scope => $priority) {
+                $configuration = $this->getConfiguration($scope);
+                $template = call_user_func($resolveTemplate, $configuration, $name, $format);
+                if($template) {
+                    return $template;
+                }
+            }
+        }
+        
+        throw new \Exception;
+    }
+    
+    /*
+     * 
+     */
+    protected function sortConfigurations()
+    {
+        return arsort($this->configurationScopes);
     }
 }

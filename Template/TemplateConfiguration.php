@@ -17,7 +17,7 @@ class TemplateConfiguration implements TemplateConfigurationInterface
     /**
      * @var string
      */
-    protected $namespace;
+    protected $scope;
 
     /**
      * @var array
@@ -28,21 +28,16 @@ class TemplateConfiguration implements TemplateConfigurationInterface
      * @var string
      */
     protected $engine;
-    
-    /**
-     * @var bool
-     */
-    protected $namespacedPaths = false;
 
     /**
      * 
-     * @param string $namespace
+     * @param string $scope
      * @param string $templates
      * @param string $engine
      */
-    public function __construct($namespace, $templates, $engine = 'twig')
+    public function __construct($scope, $templates, $engine = 'twig')
     {
-        $this->namespace = $namespace;
+        $this->scope = $scope;
         $this->templates = $templates;
         $this->engine = $engine;
     }
@@ -50,17 +45,33 @@ class TemplateConfiguration implements TemplateConfigurationInterface
     /**
      * @inheritDoc
      */
-    public function setNamespacedPaths($namespacedPaths)
+    public function setScope($scope)
     {
-        $this->namespacedPaths = $namespacedPaths;
+        $this->scope = $scope;
     }
     
     /**
      * @inheritDoc
      */
-    public function getNamespacedPaths()
+    public function getScope()
     {
-        return $this->namespacedPaths;
+        return $this->scope;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setEngine($engine)
+    {
+        $this->engine = $engine;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getEngine()
+    {
+        return $this->engine;
     }
 
     /**
@@ -71,15 +82,11 @@ class TemplateConfiguration implements TemplateConfigurationInterface
         if(isset($this->templates[$name])) {
             $template = $this->templates[$name];
             
-            if(isset($template['path'])) {
-                $separator = $this->namespacedPaths ? '/' : ':';
-                $namespace = isset($template['namespace']) ? $template['namespace'] : $this->namespace;
-                $templateNamespace = $namespace ? sprintf('%s%s', $namespace, $separator) : '';
-                
-                return sprintf('%s%s.%s.%s', $templateNamespace, $template['path'], $format, $this->engine);
+            if(isset($template['path'])) {                
+                return sprintf('%s.%s.%s', $template['path'], $format, $this->engine);
             }
         }
         
-        throw new \Exception;
+        return false;
     }
 }

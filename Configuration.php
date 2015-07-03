@@ -18,16 +18,10 @@ class Configuration implements ConfigurationInterface
      * @var string
      */
     protected $code;
-    
-    /**
-     * @var \Xidea\Bundle\BaseBundle\Template\TemplateConfigurationInterface
-     */
-    protected $templateConfiguration;
 
-    public function __construct($code, $templateConfiguration)
+    public function __construct($code)
     {
         $this->code = $code;
-        $this->templateConfiguration = $templateConfiguration;
     }
     
     /**
@@ -37,13 +31,4 @@ class Configuration implements ConfigurationInterface
     {
         return $this->code;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getTemplateConfiguration()
-    {
-        return $this->templateConfiguration;
-    }
-
 }

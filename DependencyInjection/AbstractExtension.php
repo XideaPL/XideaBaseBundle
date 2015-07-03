@@ -7,6 +7,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -22,8 +23,7 @@ abstract class AbstractExtension extends Extension
     {
         list($config, $loader) = $this->setUp($configs, new Configuration(), $container);
 
-        if(isset($config['template']))
-            $this->loadTemplateSection($config['template'], $container, $loader);
+        $this->loadTemplateSection($config, $container, $loader);
     }
     
     public function setUp(array $configs, ConfigurationInterface $configuration, ContainerBuilder $container)
@@ -35,20 +35,35 @@ abstract class AbstractExtension extends Extension
         return array($config, $loader);
     }
     
-    protected function loadTemplateSection($prefix, array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    protected function loadTemplateSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
-        $templates = array_merge($this->getDefaultTemplates(), $config['templates']);
-        
-        $container->setAlias($prefix.'.template.configuration', $config['configuration']);
-        
-        $parameters = array(
-            'template.namespace' => $config['namespace'],
-            'template.engine' => $config['engine'],
-            'template.namespaced_paths' => $config['namespaced_paths'],
-            'template.templates' => $templates
-        );
-        foreach($parameters as $name => $value) {
-            $container->setParameter(sprintf('%s.%s', $prefix, $name), $value);
+        if(isset($config['template'])) {
+            $templates = array_merge($this->getDefaultTemplates(), $config['template']['templates']);
+
+            $parameters = array(
+                'template.scope' => $config['template']['scope'],
+                'template.engine' => $config['template']['engine'],
+                'template.templates' => $templates
+            );
+            foreach($parameters as $name => $value) {
+                $container->setParameter(sprintf('%s.%s', $this->getAlias(), $name), $value);
+            }
+            
+            $templateConfigurationName = sprintf('%s.template.configuration', $this->getAlias());
+            $defaultTemplateConfigurationName = $templateConfigurationName.'.default';
+            
+            if(!$container->hasDefinition($defaultTemplateConfigurationName)) {
+                $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Template\TemplateConfiguration', [
+                    $config['template']['scope'],
+                    $templates,
+                    $config['template']['engine']
+                ]))
+                ->addTag('xidea_base.template.configuration', [
+                    'priority' => $config['template']['priority']
+                ]);
+            }
+            
+            $container->setAlias($templateConfigurationName, $config['template']['configuration']);
         }
     }
 

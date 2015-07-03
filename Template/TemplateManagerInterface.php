@@ -10,6 +10,7 @@
 namespace Xidea\Bundle\BaseBundle\Template;
 
 use Symfony\Component\HttpFoundation\Response;
+use Xidea\Bundle\TemplateBundle\Template\TemplateConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -17,23 +18,20 @@ use Symfony\Component\HttpFoundation\Response;
 interface TemplateManagerInterface
 {
     /**
-     * @param string $context
-     * 
-     * @return TemplateManagerInterface The instance
+     * Adds a configuration.
+     *
+     * @param TemplateConfigurationInterface $configuration
+     * @param int $priority
      */
-    function setContext($context);
     
-    /**
-     * @return string
-     */
-    function getContext();
+    function addConfiguration(TemplateConfigurationInterface $configuration, $priority = 0);
     
     /**
      * Returns a configuration.
      *
-     * @return \Xidea\Bundle\TemplateBundle\Template\TemplateConfigurationInterface
+     * @return TemplateConfigurationInterface
      */
-    function getConfiguration();
+    function getConfiguration($scope);
     
     /**
      * @return string
