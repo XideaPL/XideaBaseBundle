@@ -11,15 +11,16 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder,
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
-class Configuration implements ConfigurationInterface
+class Configuration extends AbstractConfiguration
 {
     /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('xidea_base');
+        $treeBuilder = parent::getConfigTreeBuilder();
+        
+        $this->addTemplateSection($rootNode);
 
         return $treeBuilder;
     }
