@@ -19,6 +19,7 @@ class Configuration extends AbstractConfiguration
     public function getConfigTreeBuilder()
     {
         $treeBuilder = parent::getConfigTreeBuilder();
+        $rootNode = $treeBuilder->root($this->getAlias());
         
         $this->addTemplateSection($rootNode);
 
