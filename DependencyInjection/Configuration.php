@@ -22,6 +22,7 @@ class Configuration extends AbstractConfiguration
         $rootNode = $treeBuilder->root($this->getAlias());
         
         $this->addTemplateSection($rootNode);
+        $this->addPaginationSection($rootNode);
 
         return $treeBuilder;
     }

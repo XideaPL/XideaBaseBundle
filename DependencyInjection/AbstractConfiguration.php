@@ -68,4 +68,24 @@ abstract class AbstractConfiguration implements ConfigurationInterface
                 ->end()
             ->end();
     }
+    
+    protected function addPaginationSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('pagination')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('parameter_name')->defaultValue('page')->end()
+                        ->arrayNode('sorter')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('parameter_name')->defaultValue('sort')->end()
+                                ->scalarNode('default_direction_value')->defaultValue('asc')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
 }

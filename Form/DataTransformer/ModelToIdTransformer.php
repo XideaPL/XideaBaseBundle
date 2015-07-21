@@ -52,7 +52,7 @@ class ModelToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        $model = $this->modelLoader->find($id);
+        $model = $this->modelLoader->load($id);
 
         if (null === $model) {
             return null;

@@ -66,6 +66,27 @@ abstract class AbstractExtension extends Extension
             $container->setAlias($templateConfigurationName, $config['template']['configuration']);
         }
     }
+    
+    protected function loadPaginationSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    {
+        if(isset($config['pagination'])) {
+            $paginatorDefinitionName = sprintf('%s.paginator', $this->getAlias());            
+            if($container->hasDefinition($paginatorDefinitionName)) {
+                $paginatorDefinition = $container->getDefinition($paginatorDefinitionName);
+                $paginatorDefinition->addMethodCall('setOptions', [[
+                    'parameterName' => $config['pagination']['parameter_name']
+                ]]);
+            }
+            $sorterDefinitionName = sprintf('%s.sorter', $this->getAlias());            
+            if($container->hasDefinition($sorterDefinitionName)) {
+                $sorterDefinition = $container->getDefinition($sorterDefinitionName);
+                $sorterDefinition->addMethodCall('setOptions', [[
+                    'parameterName' => $config['pagination']['sorter']['parameter_name'],
+                    'defaultDirectionValue' => $config['pagination']['sorter']['default_direction_value']
+                ]]);
+            }
+        }
+    }
 
     abstract protected function getConfigurationDirectory();
     

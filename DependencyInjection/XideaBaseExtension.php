@@ -25,6 +25,7 @@ class XideaBaseExtension extends AbstractExtension
         $loader->load('twig.yml');
         
         $this->loadTemplateSection($config, $container, $loader);
+        $this->loadPaginationSection($config, $container, $loader);
     }
     
     protected function getConfigurationDirectory()
