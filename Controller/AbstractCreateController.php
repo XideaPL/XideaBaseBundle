@@ -22,7 +22,7 @@ abstract class AbstractCreateController extends AbstractController
     /*
      * @var model
      */
-    protected $modelManager;
+    protected $manager;
 
     /*
      * @var ProductFormHandlerInterface
@@ -42,14 +42,14 @@ abstract class AbstractCreateController extends AbstractController
     /**
      * 
      * @param ConfigurationInterface $configuration
-     * @param type $modelManager
+     * @param type $manager
      * @param FormHandlerInterface $formHandler
      */
-    public function __construct(ConfigurationInterface $configuration, $modelManager, FormHandlerInterface $formHandler)
+    public function __construct(ConfigurationInterface $configuration, $manager, FormHandlerInterface $formHandler)
     {
         parent::__construct($configuration);
 
-        $this->modelManager = $modelManager;
+        $this->manager = $manager;
         $this->formHandler = $formHandler;
     }
 
@@ -73,7 +73,7 @@ abstract class AbstractCreateController extends AbstractController
 
         $form = $this->createForm($model);
         if ($this->handleForm($form, $request)) {
-            if ($this->modelManager->save($model)) {
+            if ($this->manager->save($model)) {
                 $response = $this->onCreateSuccess($model, $request);
 
                 return $this->onCreateCompleted($model, $request, $response);

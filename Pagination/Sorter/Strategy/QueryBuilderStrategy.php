@@ -10,7 +10,7 @@
 namespace Xidea\Bundle\BaseBundle\Pagination\Sorter\Strategy;
 
 use Xidea\Bundle\BaseBundle\Pagination\SorterStrategyInterface;
-use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
+use Doctrine\ORM\QueryBuilder as DoctrineORMQueryBuilder;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -29,7 +29,7 @@ class QueryBuilderStrategy implements SorterStrategyInterface
      */
     public function support($target)
     {
-        return $target instanceof DoctrineQueryBuilder;
+        return $target instanceof DoctrineORMQueryBuilder;
     }
 
 }

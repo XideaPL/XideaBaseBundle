@@ -32,7 +32,7 @@ interface PaginationInterface
     /**
      * @return int
      */
-    function getLimit($limit);
+    function getLimit();
     
     /**
      * @param int $total

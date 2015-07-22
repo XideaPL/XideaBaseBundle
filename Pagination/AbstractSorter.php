@@ -9,6 +9,7 @@
 
 namespace Xidea\Bundle\BaseBundle\Pagination;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
