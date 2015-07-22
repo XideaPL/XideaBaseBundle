@@ -2,8 +2,8 @@ parameters:
     xidea_base.configuration.pool.class: Xidea\Bundle\BaseBundle\ConfigurationPool
     xidea_base.template.configuration.pool.class: Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPool
     xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\TemplateManager
-    xidea_base.paginator.class: Xidea\Bundle\BaseBundle\Pagination\Paginator
-    xidea_base.sorter.class: Xidea\Bundle\BaseBundle\Pagination\Sorter
+    xidea_base.paginator.class: Xidea\Bundle\BaseBundle\Pagination\DefaultPaginator
+    xidea_base.sorter.class: Xidea\Bundle\BaseBundle\Pagination\DefaultSorter
 
 services:
     xidea_base.configuration.pool:
@@ -17,7 +17,9 @@ services:
             - @templating
     xidea_base.paginator:
         class: %xidea_base.paginator.class%
-        calls:
-             - [setSorter, [@xidea_base.sorter]]
+        arguments:
+            - @xidea_base.sorter
     xidea_base.sorter:
         class: %xidea_base.sorter.class%
+        arguments:
+            - @request_stack

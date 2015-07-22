@@ -13,17 +13,7 @@ namespace Xidea\Bundle\BaseBundle\Pagination;
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 interface PaginatorInterface
-{
-    /**
-     * @param SorterInterface $sorter
-     */
-    function setSorter(SorterInterface $sorter);
-    
-    /**
-     * @return SorterInterface
-     */
-    function getSorter();
-    
+{    
     /**
      * @param array $options
      */

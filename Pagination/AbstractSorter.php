@@ -9,40 +9,44 @@
 
 namespace Xidea\Bundle\BaseBundle\Pagination;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class Sorter implements SorterInterface
+class AbstractSorter implements SorterInterface
 {
+    const PARAMETER_NAME = 'sort';
+    const DIRECTION_VALUE = 'asc';
+    
     /*
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
     
     /*
      * @var array 
      */
     protected $options = [
-        'parameterName' => 'sort',
-        'defaultDirectionValue' => 'asc'
+        'parameterName' => self::PARAMETER_NAME,
+        'defaultDirectionValue' => self::DIRECTION_VALUE
     ];
     
     /**
-     * @inheritDoc
+     * 
+     * @param RequestStack $requestStack
      */
-    public function setRequest(Request $request)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
-    
+
     /**
-     * @inheritDoc
+     * @return Request
      */
     public function getRequest()
     {
-        return $this->request;
+        return $this->requestStack->getCurrentRequest();
     }
     
     /**
@@ -75,13 +79,18 @@ class Sorter implements SorterInterface
         $options = array_merge($this->options, $options);
         
         $fields = $request->query->get($options['parameterName']);
+        
+        if(!$fields) {
+            return;
+        }
+        
         $defaultDirection = $options['defaultDirectionValue'];
         if(strpos($fields, '+') !== false) {
             $fields = explode('+', $fields);
         }
         
         $sorterFields = [];
-        $resolveField = function($field) use ($sorterFields) {
+        $resolveField = function($field) use ($sorterFields, $defaultDirection) {
             $field = explode('.', $field);
             if(count($field) == 3) {
                 $sorterFields[$field[1]] = [

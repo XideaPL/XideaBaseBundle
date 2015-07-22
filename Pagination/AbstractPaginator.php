@@ -9,11 +9,15 @@
 
 namespace Xidea\Bundle\BaseBundle\Pagination;
 
+use Xidea\Bundle\BaseBundle\Pagination\SorterInterface;
+
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class Paginator implements PaginatorInterface
+class AbstractPaginator implements PaginatorInterface
 {
+    const PARAMETER_NAME = 'page';
+    
     /*
      * @var SorterInterface
      */
@@ -23,19 +27,20 @@ class Paginator implements PaginatorInterface
      * @var array 
      */
     protected $options = [
-        'parameterName' => 'page'
+        'parameterName' => self::PARAMETER_NAME
     ];
     
     /**
-     * @inheritDoc
+     * 
+     * @param SorterInterface $sorter
      */
-    public function setSorter(SorterInterface $sorter)
+    public function __construct(SorterInterface $sorter)
     {
         $this->sorter = $sorter;
     }
     
     /**
-     * @inheritDoc
+     * @return SorterInterface
      */
     public function getSorter()
     {

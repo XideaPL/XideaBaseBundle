@@ -12,20 +12,6 @@ namespace Xidea\Bundle\BaseBundle\Pagination;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface SorterInterface
+class DefaultPaginator extends AbstractPaginator
 {
-    /**
-     * @param array $options
-     */
-    function setOptions(array $options);
-    
-    /**
-     * @return array
-     */
-    function getOptions();
-    
-    /**
-     * @return void
-     */
-    function sort($target, array $options = []);
 }

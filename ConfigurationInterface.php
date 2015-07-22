@@ -20,4 +20,24 @@ interface ConfigurationInterface
      * @return string
      */
     function getCode();
+    
+    /*
+     * @return string
+     */
+    function getPaginationParameterName();
+    
+    /*
+     * @return int
+     */
+    function getPaginationLimit();
+    
+    /*
+     * @return array
+     */
+    function getPaginationLimitValues();
+    
+    /*
+     * @return string
+     */
+    function getSortParameterName();
 }
