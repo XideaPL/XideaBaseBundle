@@ -57,56 +57,106 @@ abstract class AbstractController
         $this->configuration = $configuration;
     }
 
+    /**
+     * 
+     * @return ConfigurationInterface
+     */
     public function getConfiguration()
     {
         return $this->configuration;
     }
 
+    /**
+     * 
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * 
+     * @return EventDispatcherInterface
+     */
     public function getEventDispatcher()
     {
         return $this->eventDispatcher;
     }
 
+    /**
+     * 
+     * @param RouterInterface $router
+     */
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * 
+     * @return RouterInterface
+     */
     public function getRouter()
     {
         return $this->router;
     }
-
+    
+    /**
+     * 
+     * @param TemplateManagerInterface $templateManager
+     */
     public function setTemplateManager(TemplateManagerInterface $templateManager)
     {
         $this->templateManager = $templateManager;
     }
 
+    /**
+     * 
+     * @return TemplateManagerInterface
+     */
     public function getTemplateManager()
     {
         return $this->templateManager;
     }
 
+    /**
+     * 
+     * @param TranslatorInterface $translator
+     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
+    /**
+     * 
+     * @return TranslatorInterface
+     */
     public function getTranslator()
     {
         return $this->translator;
     }
-
+    
+    /**
+     * 
+     * @param string $url
+     * @param int $status
+     * @return RedirectResponse
+     */
     protected function redirect($url, $status = 302)
     {
         return new RedirectResponse($url, $status);
     }
 
+    /**
+     * 
+     * @param string $route
+     * @param array $parameters
+     * @param int $status
+     * @return RedirectResponse
+     * @throws \LogicException
+     */
     protected function redirectToRoute($route, array $parameters = array(), $status = 302)
     {
         if($this->getRouter())
@@ -115,6 +165,14 @@ abstract class AbstractController
         throw new \LogicException();
     }
 
+    /**
+     * 
+     * @param string $view
+     * @param array $parameters
+     * @param Response|null $response
+     * @return Response
+     * @throws \LogicException
+     */
     protected function render($view, array $parameters = array(), Response $response = null)
     {
         if($this->getTemplateManager())
@@ -123,6 +181,13 @@ abstract class AbstractController
         throw new \LogicException();
     }
     
+    /**
+     * 
+     * @param type $eventName
+     * @param Event|null $event
+     * @return \Symfony\Component\EventDispatcher\Event
+     * @throws \LogicException
+     */
     protected function dispatch($eventName, Event $event = null)
     {
         if($this->getEventDispatcher())

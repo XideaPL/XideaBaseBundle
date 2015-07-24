@@ -31,6 +31,11 @@ abstract class AbstractListController extends AbstractController
         parent::__construct($configuration);
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @return Response
+     */
     public function listAction(Request $request)
     {
         $models = $this->loadModels($request);
@@ -44,12 +49,27 @@ abstract class AbstractListController extends AbstractController
         ), $request);
     }
     
+    /**
+     * 
+     * @param array $parameters
+     * @param Request $request
+     * @return Response
+     */
     protected function onListView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->listTemplate, $parameters);
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return array
+     */
     abstract protected function loadModels(Request $request);
     
+    /**
+     * @param mixed $models
+     * @param Request $request
+     */
     abstract protected function onPreList($models, Request $request);
 }

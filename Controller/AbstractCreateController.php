@@ -42,7 +42,7 @@ abstract class AbstractCreateController extends AbstractController
     /**
      * 
      * @param ConfigurationInterface $configuration
-     * @param type $manager
+     * @param mixed $manager
      * @param FormHandlerInterface $formHandler
      */
     public function __construct(ConfigurationInterface $configuration, $manager, FormHandlerInterface $formHandler)
@@ -53,6 +53,11 @@ abstract class AbstractCreateController extends AbstractController
         $this->formHandler = $formHandler;
     }
 
+    /**
+     * 
+     * @param mixed $model
+     * @return \Symfony\Component\Form\FormInterface
+     */
     public function createForm($model = null)
     {
         $form = $this->formHandler->createForm();
@@ -63,6 +68,11 @@ abstract class AbstractCreateController extends AbstractController
         return $form;
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @return Response
+     */
     public function createAction(Request $request)
     {
         $model = $this->createModel();
@@ -85,6 +95,11 @@ abstract class AbstractCreateController extends AbstractController
         ), $request);
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @return Response
+     */
     public function createFormAction(Request $request)
     {
         $form = $this->createForm();
@@ -94,26 +109,60 @@ abstract class AbstractCreateController extends AbstractController
         ), $request);
     }
 
+    /**
+     * 
+     * @param \Symfony\Component\Form\FormInterface $form
+     * @param Request $request
+     * @return bool
+     */
     protected function handleForm($form, Request $request)
     {
         return $this->formHandler->handle($form, $request);
     }
     
+    /**
+     * 
+     * @param array $parameters
+     * @param Request|null $request
+     * @return Response
+     */
     protected function onCreateView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->createTemplate, $parameters);
     }
 
+    /**
+     * 
+     * @param array $parameters
+     * @param Request|null $request
+     * @return Response
+     */
     protected function onCreateFormView(array $parameters = array(), Request $request = null)
     {
         return $this->render($this->createFormTemplate, $parameters);
     }
 
+    /**
+     * @return mixed
+     */
     abstract protected function createModel();
 
+    /**
+     * @param mixed $model
+     * @param Request $request
+     */
     abstract protected function onPreCreate($model, Request $request);
 
+    /**
+     * @param mixed $model
+     * @param Request $request
+     */
     abstract protected function onCreateSuccess($model, Request $request);
 
+    /**
+     * @param mixed $model
+     * @param Request $request
+     * @param Response $response
+     */
     abstract protected function onCreateCompleted($model, Request $request, Response $response);
 }
