@@ -36,7 +36,9 @@ class XideaBaseExtension extends AbstractExtension
     protected function getDefaultTemplates()
     {
         return [
-            'main' => ['path' => '/main']
+            'main' => ['path' => '/main'],
+            'base_pagination_bootstrap_v3' => ['path' => '@XideaBase/Pagination/pagination_bootstrap_v3'],
+            'base_sorting' => ['path' => '@XideaBase/Pagination/sorting']
         ];
     }
 }

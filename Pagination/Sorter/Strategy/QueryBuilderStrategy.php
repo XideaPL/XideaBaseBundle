@@ -20,8 +20,11 @@ class QueryBuilderStrategy implements SorterStrategyInterface
     /**
      * @inheritDoc
      */
-    public function sort($target, $fields)
+    public function sort($target, $keys, $directions)
     {
+        foreach($keys as $key) {
+            $target->addOrderBy($key, $directions[$key]);
+        }
     }
 
     /**

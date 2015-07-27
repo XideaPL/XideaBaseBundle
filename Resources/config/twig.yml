@@ -1,10 +1,18 @@
 parameters:
     xidea_base.twig.template.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\TemplateExtension
+    xidea_base.twig.pagination.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\PaginationExtension
 
 services:
     xidea_base.twig.template.extension:
         class: %xidea_base.twig.template.extension.class%
         arguments:
             - @xidea_base.template.configuration.pool
+        tags:
+            - { name: twig.extension }
+    xidea_base.twig.pagination.extension:
+        class: %xidea_base.twig.pagination.extension.class%
+        arguments:
+            - @xidea_base.template_manager
+            - @router
         tags:
             - { name: twig.extension }

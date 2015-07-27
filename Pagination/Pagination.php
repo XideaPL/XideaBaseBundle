@@ -15,40 +15,142 @@ namespace Xidea\Bundle\BaseBundle\Pagination;
 class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAccess
 {
     /*
+     * @var array
+     */
+    protected $paginatorOptions;
+    
+    /*
+     * @var SortingInterface
+     */
+    protected $sorting;
+    
+    /*
+     * @var string
+     */
+    protected $route;
+    
+    /*
+     * @var array
+     */
+    protected $routeParameters = [];
+    
+    /*
      * @var int
      */
-    protected $currentPageNumber;
-    
+    protected $currentPage;
+
     /*
      * @var int
      */
     protected $limit;
-    
+
     /*
      * @var int
      */
     protected $total;
-    
+
     /*
      * @var array
      */
     protected $items = [];
     
     /**
-     * {@inheritDoc}
+     * 
+     * @param array $paginatorOptions
      */
-    public function setCurrentPageNumber($pageNumber)
+    public function __construct(array $paginatorOptions)
     {
-        $this->currentPageNumber = $pageNumber;
+        $this->paginatorOptions = $paginatorOptions;
     }
     
     /**
      * {@inheritDoc}
      */
-    public function getCurrentPageNumber()
+    public function getPaginatorOption($name)
     {
-        return $this->currentPageNumber;
+        return isset($this->paginatorOptions[$name]) ? $this->paginatorOptions[$name] : null;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getPaginatorOptions()
+    {
+        return $this->paginatorOptions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSorting(SortingInterface $sorting = null)
+    {
+        $this->sorting = $sorting;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setRouteParameters(array $parameters)
+    {
+        $this->routeParameters = $parameters;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getRouteParameters()
+    {
+        return $this->routeParameters;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function addRouteParameter($name, $value)
+    {
+        $this->routeParameters[$name] = $value;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setCurrentPage($page)
+    {
+        $this->currentPage = $page;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCurrentPage()
+    {
+        return $this->currentPage;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -56,7 +158,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         $this->limit = $limit;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +166,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return $this->limit;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -72,7 +174,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         $this->total = $total;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -80,7 +182,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return $this->total;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -91,7 +193,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
         }
         $this->items = $items;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -99,42 +201,88 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return $this->items;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function rewind() {
+    public function getPageCount()
+    {
+        return intval(ceil($this->total / $this->limit));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getViewData()
+    {
+        $pageCount = $this->getPageCount();
+        $current = $this->getCurrentPage();
+
+        if ($pageCount < $current) {
+            $this->setCurrentPage($current = $pageCount);
+        }
+
+        $viewData = [
+            'parameterName' => $this->getPaginatorOption('parameterName'),
+            'last' => $pageCount,
+            'current' => $current,
+            'limit' => $this->limit,
+            'first' => 1,
+            'pageCount' => $pageCount,
+            'total' => $this->total
+        ];
+        
+        if($current > 1) {
+            $viewData['previous'] = $current - 1;
+        }
+        
+        if($current < $pageCount) {
+            $viewData['next'] = $current + 1;
+        }
+        
+        return $viewData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind()
+    {
         reset($this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function current() {
+    public function current()
+    {
         return current($this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function key() {
+    public function key()
+    {
         return key($this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function next() {
+    public function next()
+    {
         next($this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function valid() {
+    public function valid()
+    {
         return key($this->items) !== null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -142,7 +290,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return count($this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -150,7 +298,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return array_key_exists($offset, $this->items);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -158,7 +306,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         return $this->items[$offset];
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -170,7 +318,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
             $this->items[$offset] = $value;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -178,4 +326,5 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
     {
         unset($this->items[$offset]);
     }
+
 }

@@ -9,8 +9,8 @@
 
 namespace Xidea\Bundle\BaseBundle\Pagination;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\RequestStack,
+    Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -30,7 +30,10 @@ class AbstractSorter implements SorterInterface
      */
     protected $options = [
         'parameterName' => self::PARAMETER_NAME,
-        'defaultDirectionValue' => self::DIRECTION_VALUE
+        'defaultDirectionValue' => self::DIRECTION_VALUE,
+        'availableDirectionValues' => ['asc', 'desc'],
+        'absoluteUrl' => false,
+        'template' => 'base_sorting'
     ];
     
     /**
@@ -79,44 +82,50 @@ class AbstractSorter implements SorterInterface
         
         $options = array_merge($this->options, $options);
         
-        $fields = $request->query->get($options['parameterName']);
+        $keys = $request->query->get($options['parameterName']);
         
-        if(!$fields) {
+        if(!$keys) {
             return;
         }
         
-        $defaultDirection = $options['defaultDirectionValue'];
-        if(strpos($fields, '+') !== false) {
-            $fields = explode('+', $fields);
-        }
+        $sorting = new Sorting($options);
+        $sorting->setRoute($request->get('_route'));
         
-        $sorterFields = [];
-        $resolveField = function($field) use ($sorterFields, $defaultDirection) {
-            $field = explode('.', $field);
-            if(count($field) == 3) {
-                $sorterFields[$field[1]] = [
-                    'alias' => $field[0],
-                    'direction' => $field[2]
-                ];
-            } else {
-                $sorterFields[$field[0]] = [
-                    'direction' => isset($field[1]) ? $field[1] : $defaultDirection
-                ];
+        $defaultDirection = $options['defaultDirectionValue'];
+        if(strpos($keys, '+') !== false) {
+            $keys = explode('+', $keys);
+        }
+
+        $resolveKey = function($key) use ($sorting, $defaultDirection) {
+            $keyName = $key;
+            $keyDirection = $defaultDirection;
+            
+            $parts = explode('.', $key);
+            if(count($parts) > 1) {
+                $direction = array_pop($parts);
+                if(in_array(end($parts), ['asc', 'desc'])) {
+                    $keyName = implode('.', array_slice($parts, 0, -1));
+                    $keyDirection = $direction;
+                }
             }
+            
+            $sorting->addKey($key, $keyDirection);
         };
         
-        if(is_array($fields)) {
-            foreach($fields as $field) {
-                call_user_func($resolveField, $field);
+        if($keys) {
+            if(is_array($keys)) {
+                foreach($keys as $key) {
+                    call_user_func($resolveKey, $key);
+                }
+            } else {
+                call_user_func($resolveKey, $keys);
             }
-        } else {
-            call_user_func($resolveField, $fields);
+            
+            $strategy = $this->getStrategy($target);
+            $strategy->sort($target, $sorting->getKeys(), $sorting->getDirections());
         }
         
-        if(count($sorterFields)) {
-            $strategy = $this->getStrategy($target);
-            $strategy->sort($target, $sorterFields);
-        }
+        return $sorting;
     }
     
     /**

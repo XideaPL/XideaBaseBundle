@@ -15,9 +15,13 @@ namespace Xidea\Bundle\BaseBundle\Pagination;
 interface SorterStrategyInterface
 {
     /**
+     * @param mixed $target
+     * @param array $keys
+     * @param array $directions
+     * 
      * @return array
      */
-    function sort($target, $fields);
+    function sort($target, $keys, $directions);
     
     /**
      * 

@@ -1,0 +1,24 @@
+{% if pageCount > 1 %}
+    <ul class="pagination">
+
+        {% if previous is defined %}
+            <li>
+                <a href="{{ path(route, {parameterName: previous}) }}">&laquo;&nbsp;{{ 'Previous'|trans }}</a>
+            </li>
+        {% else %}
+            <li class="disabled">
+                <span>&laquo;&nbsp;{{ 'Previous'|trans }}</span>
+            </li>
+        {% endif %}
+
+        {% if next is defined %}
+            <li>
+                <a href="{{ path(route, {parameterName: next}) }}">{{ 'Next'|trans }}&nbsp;&raquo;</a>
+            </li>
+        {% else %}
+            <li class="disabled">
+                <span>{{ 'Next'|trans }}&nbsp;&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}

@@ -12,27 +12,17 @@ namespace Xidea\Bundle\BaseBundle\Pagination;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface PaginationInterface
+interface SortingInterface
 {
     /*
      * @return mixed
      */
-    function getPaginatorOption($name);
+    function getSorterOption($name);
     
     /*
-     * @var array
+     * @return array
      */
-    function getPaginatorOptions();
-    
-    /**
-     * @param SortingInterface $sorting
-     */
-    function setSorting(SortingInterface $sorting = null);
-    
-    /**
-     * @return SortingInterface
-     */
-    function getSorting();
+    function getSorterOptions();
     
     /**
      * @param string $route
@@ -61,49 +51,55 @@ interface PaginationInterface
     function addRouteParameter($name, $value);
     
     /**
-     * @param int $page
+     * @param array $keys
      */
-    function setCurrentPage($page);
-    
-    /**
-     * @return int
-     */
-    function getCurrentPage();
-    
-    /**
-     * @param int $limit
-     */
-    function setLimit($limit);
-    
-    /**
-     * @return int
-     */
-    function getLimit();
-    
-    /**
-     * @param int $total
-     */
-    function setTotal($total);
-    
-    /**
-     * @return int
-     */
-    function getTotal();
-    
-    /**
-     * @param mixed $items
-     */
-    function setItems($items);
+    function setKeys(array $keys);
     
     /**
      * @return array
      */
-    function getItems();
+    function getKeys();
     
     /**
-     * @return int
+     * @param string $key
+     * @param string $direction
      */
-    function getPageCount();
+    function addKey($key, $direction = AbstractSorter::DIRECTION_VALUE);
+    
+    /*
+     * @return bool
+     */
+    function isSorted($key);
+
+    /**
+     * @return array
+     */
+    function getDirections();
+    
+    /**
+     * @param string $key
+     * @param string $direction
+     */
+    function setDirection($key, $direction = AbstractSorter::DIRECTION_VALUE);
+    
+    /**
+     * @param string $key
+     * 
+     * @return string
+     */
+    function getDirection($key);
+    
+    /**
+     * @param string $key
+     * 
+     * @return string
+     */
+    function getNextDirection($key);
+    
+    /*
+     * @return array
+     */
+    function getKeysWithDirections();
     
     /**
      * @return array

@@ -9,6 +9,8 @@
 
 namespace Xidea\Bundle\BaseBundle\Pagination;
 
+use Symfony\Component\HttpFoundation\RequestStack,
+    Symfony\Component\HttpFoundation\Request;
 use Xidea\Bundle\BaseBundle\Pagination\SorterInterface;
 
 /**
@@ -19,6 +21,11 @@ class AbstractPaginator implements PaginatorInterface
     const PARAMETER_NAME = 'page';
     
     /*
+     * @var RequestStack
+     */
+    protected $requestStack;
+    
+    /*
      * @var SorterInterface
      */
     protected $sorter;
@@ -27,16 +34,27 @@ class AbstractPaginator implements PaginatorInterface
      * @var array 
      */
     protected $options = [
-        'parameterName' => self::PARAMETER_NAME
+        'parameterName' => self::PARAMETER_NAME,
+        'absoluteUrl' => false,
+        'template' => 'base_pagination_bootstrap_v3'
     ];
     
     /**
-     * 
+     * @param RequestStack $requestStack
      * @param SorterInterface $sorter
      */
-    public function __construct(SorterInterface $sorter)
+    public function __construct(RequestStack $requestStack, SorterInterface $sorter)
     {
+        $this->requestStack = $requestStack;
         $this->sorter = $sorter;
+    }
+    
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
     
     /**
@@ -74,13 +92,18 @@ class AbstractPaginator implements PaginatorInterface
         $offset = abs($page - 1) * $limit;
         
         $options = array_merge($this->options, $options);
-        $sorter = $this->getSorter();
-        $pagination = new Pagination();
         
-        $sorter->sort($target, isset($options['sorter']) ? $options['sorter'] : []);
+        $request = $this->getRequest();
+        $sorter = $this->getSorter();
+        $pagination = new Pagination($options);
+        $pagination->setRoute($request->get('_route'));
+        
+        $sorting = $sorter->sort($target, isset($options['sorter']) ? $options['sorter'] : []);
+        
         $items = $strategy->paginate($target, $offset, $limit);
         
-        $pagination->setCurrentPageNumber($page);
+        $pagination->setSorting($sorting);
+        $pagination->setCurrentPage($page);
         $pagination->setLimit($limit);
         $pagination->setItems($items);
         $pagination->setTotal($strategy->getTotal());

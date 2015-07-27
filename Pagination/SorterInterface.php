@@ -25,7 +25,7 @@ interface SorterInterface
     function getOptions();
     
     /**
-     * @return void
+     * @return SortingInterface
      */
     function sort($target, array $options = []);
 }

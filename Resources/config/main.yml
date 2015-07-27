@@ -18,6 +18,7 @@ services:
     xidea_base.paginator:
         class: %xidea_base.paginator.class%
         arguments:
+            - @request_stack
             - @xidea_base.sorter
     xidea_base.sorter:
         class: %xidea_base.sorter.class%
