@@ -17,14 +17,16 @@ use Symfony\Component\HttpFoundation\RequestStack,
  */
 class AbstractSorter implements SorterInterface
 {
+
     const PARAMETER_NAME = 'sort';
     const DIRECTION_VALUE = 'asc';
-    
+
     /*
      * @var RequestStack
      */
+
     protected $requestStack;
-    
+
     /*
      * @var array 
      */
@@ -35,7 +37,7 @@ class AbstractSorter implements SorterInterface
         'absoluteUrl' => false,
         'template' => 'base_sorting'
     ];
-    
+
     /**
      * 
      * @param RequestStack $requestStack
@@ -52,7 +54,7 @@ class AbstractSorter implements SorterInterface
     {
         return $this->requestStack->getCurrentRequest();
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -60,7 +62,7 @@ class AbstractSorter implements SorterInterface
     {
         $this->options = array_merge($this->options, $options);
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -68,81 +70,79 @@ class AbstractSorter implements SorterInterface
     {
         return $this->options;
     }
-    
+
     /**
      * @inheritDoc
      */
     public function sort($target, array $options = [])
     {
         $request = $this->getRequest();
-        
+
         if (!$request instanceof Request) {
             throw new \RuntimeException('Use the request object in the sorter.');
         }
-        
+
         $options = array_merge($this->options, $options);
-        
-        $keys = $request->query->get($options['parameterName']);
-        
-        if(!$keys) {
-            return;
-        }
-        
+
         $sorting = new Sorting($options);
         $sorting->setRoute($request->get('_route'));
-        
-        $defaultDirection = $options['defaultDirectionValue'];
-        if(strpos($keys, '+') !== false) {
-            $keys = explode('+', $keys);
-        }
 
-        $resolveKey = function($key) use ($sorting, $defaultDirection) {
-            $keyName = $key;
-            $keyDirection = $defaultDirection;
-            
-            $parts = explode('.', $key);
-            if(count($parts) > 1) {
-                $direction = array_pop($parts);
-                if(in_array(end($parts), ['asc', 'desc'])) {
-                    $keyName = implode('.', array_slice($parts, 0, -1));
-                    $keyDirection = $direction;
-                }
+        $keys = $request->query->get($options['parameterName']);
+
+        if ($keys) {
+            $defaultDirection = $options['defaultDirectionValue'];
+            if (strpos($keys, '+') !== false) {
+                $keys = explode('+', $keys);
             }
-            
-            $sorting->addKey($key, $keyDirection);
-        };
-        
-        if($keys) {
-            if(is_array($keys)) {
-                foreach($keys as $key) {
+
+            $resolveKey = function($key) use ($sorting, $defaultDirection) {
+                $keyName = $key;
+                $keyDirection = $defaultDirection;
+
+                $parts = explode('.', $key);
+                
+                if (count($parts) > 1) {
+                    $direction = array_pop($parts);
+                    
+                    if (in_array($direction, ['asc', 'desc'])) {
+                        $keyName = implode('.', $parts);
+                        $keyDirection = $direction;
+                    }
+                }
+                
+                $sorting->addKey($keyName, $keyDirection);
+            };
+
+            if (is_array($keys)) {
+                foreach ($keys as $key) {
                     call_user_func($resolveKey, $key);
                 }
             } else {
                 call_user_func($resolveKey, $keys);
             }
-            
+
             $strategy = $this->getStrategy($target);
             $strategy->sort($target, $sorting->getKeys(), $sorting->getDirections());
         }
-        
+
         return $sorting;
     }
-    
+
     /**
      * @return SorterStrategyInterface
      */
     protected function getStrategy($target)
     {
         $strategies = $this->getStrategies();
-        
-        foreach($strategies as $strategy) {
-            if($strategy->support($target))
+
+        foreach ($strategies as $strategy) {
+            if ($strategy->support($target))
                 return $strategy;
         }
-        
+
         throw new \Exception;
     }
-    
+
     /**
      * @return SorterStrategyInterface[]
      */
@@ -152,4 +152,5 @@ class AbstractSorter implements SorterInterface
             new Sorter\Strategy\QueryBuilderStrategy()
         ];
     }
+
 }

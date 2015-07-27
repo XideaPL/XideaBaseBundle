@@ -224,6 +224,7 @@ class Pagination implements PaginationInterface, \Countable, \Iterator, \ArrayAc
 
         $viewData = [
             'parameterName' => $this->getPaginatorOption('parameterName'),
+            'route' => $this->getRoute(),
             'last' => $pageCount,
             'current' => $current,
             'limit' => $this->limit,

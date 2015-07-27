@@ -135,7 +135,7 @@ class Sorting implements SortingInterface
      */
     public function isSorted($key)
     {
-        return isset($this->keys[$key]);
+        return in_array($key, $this->keys);
     }
     
     /**
@@ -176,9 +176,9 @@ class Sorting implements SortingInterface
         $directionValues = $this->getSorterOption('availableDirectionValues');
         
         if(count($directionValues) > 1) {
-            $last = array_pop($directionValues);
+            $last = end($directionValues);
             if($last == $direction) {
-                $direction = array_shift($directionValues);
+                $direction = $directionValues[0];
             } else {
                 $index = array_search($direction, $directionValues);
                 $direction = $directionValues[$index + 1];

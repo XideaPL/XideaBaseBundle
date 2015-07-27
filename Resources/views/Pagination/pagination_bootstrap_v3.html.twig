@@ -3,7 +3,7 @@
 
         {% if previous is defined %}
             <li>
-                <a href="{{ path(route, {parameterName: previous}) }}">&laquo;&nbsp;{{ 'Previous'|trans }}</a>
+                <a href="{{ path(route, {(parameterName): previous}) }}">&laquo;&nbsp;{{ 'Previous'|trans }}</a>
             </li>
         {% else %}
             <li class="disabled">
@@ -13,7 +13,7 @@
 
         {% if next is defined %}
             <li>
-                <a href="{{ path(route, {parameterName: next}) }}">{{ 'Next'|trans }}&nbsp;&raquo;</a>
+                <a href="{{ path(route, {(parameterName): next}) }}">{{ 'Next'|trans }}&nbsp;&raquo;</a>
             </li>
         {% else %}
             <li class="disabled">

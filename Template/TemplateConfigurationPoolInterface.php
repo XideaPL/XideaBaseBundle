@@ -40,5 +40,5 @@ interface TemplateConfigurationPoolInterface
      * @param string $name
      * @param string $format
      */
-    function getTemplate($name, $format);
+    function getTemplate($name, $format = 'html');
 }

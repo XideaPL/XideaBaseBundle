@@ -55,7 +55,7 @@ class PaginationExtension extends \Twig_Extension
 
     public function getName()
     {
-        return 'xidea_base_template';
+        return 'xidea_base_pagination';
     }
 
     public function pagination(PaginationInterface $pagination, $options = [])
@@ -63,7 +63,7 @@ class PaginationExtension extends \Twig_Extension
         $options = array_merge($pagination->getPaginatorOptions(), $options);
         
         $viewData = $pagination->getViewData();
-
+        
         if (isset($options['template'])) {
             return $this->environment->render($this->configurationPool->getTemplate($options['template']), $viewData);
         }

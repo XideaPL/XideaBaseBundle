@@ -54,7 +54,7 @@ class TemplateConfigurationPool implements TemplateConfigurationPoolInterface
     /*
      * 
      */
-    public function getTemplate($name, $format)
+    public function getTemplate($name, $format = 'html')
     {
         $resolveTemplate = function($configuration, $name, $format) {
             if(is_object($configuration)) {
