@@ -3,16 +3,21 @@
 namespace Xidea\Bundle\BaseBundle\Twig\Extension;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Xidea\Bundle\BaseBundle\Template\TemplateManagerInterface,
+use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPoolInterface,
     Xidea\Bundle\BaseBundle\Pagination\PaginationInterface,
     Xidea\Bundle\BaseBundle\Pagination\SortingInterface;
 
 class PaginationExtension extends \Twig_Extension
 {
     /*
-     * @var TemplateManagerInterface
+     * @var TemplateConfigurationPoolInterface
      */
-    protected $manager;
+    protected $configurationPool;
+    
+    /**
+     * @var \Twig_Environment
+     */
+    protected $environment;
 
     /*
      * @var UrlGeneratorInterface
@@ -21,12 +26,20 @@ class PaginationExtension extends \Twig_Extension
 
     /**
      * 
-     * @param TemplateManagerInterface $manager
+     * @param TemplateConfigurationPoolInterface $configurationPool
      */
-    public function __construct(TemplateManagerInterface $manager, UrlGeneratorInterface $router)
+    public function __construct(TemplateConfigurationPoolInterface $configurationPool, UrlGeneratorInterface $router)
     {
-        $this->manager = $manager;
+        $this->configurationPool = $configurationPool;
         $this->router = $router;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->environment = $environment;
     }
 
     /**
@@ -52,7 +65,7 @@ class PaginationExtension extends \Twig_Extension
         $viewData = $pagination->getViewData();
 
         if (isset($options['template'])) {
-            return $this->manager->render($options['template'], $viewData);
+            return $this->environment->render($this->configurationPool->getTemplate($options['template']), $viewData);
         }
     }
 
@@ -85,7 +98,7 @@ class PaginationExtension extends \Twig_Extension
         $viewData['attributes'] = $attributes;
 
         if (isset($options['template'])) {
-            return $this->manager->render($options['template'], $viewData);
+            return $this->environment->render($this->configurationPool->getTemplate($options['template']), $viewData);
         }
     }
 

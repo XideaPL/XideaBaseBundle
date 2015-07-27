@@ -12,7 +12,7 @@ services:
     xidea_base.twig.pagination.extension:
         class: %xidea_base.twig.pagination.extension.class%
         arguments:
-            - @xidea_base.template_manager
+            - @xidea_base.template.configuration.pool
             - @router
         tags:
             - { name: twig.extension }
