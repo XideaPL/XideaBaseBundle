@@ -2,8 +2,6 @@ model:
     label: Model
 
 form:
+    submit: Wyślij
+    save: Zapisz
     required_fields: Pola z * są wymagane.
-    
-model_form:
-    create:
-        submit: Utwórz
