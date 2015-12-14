@@ -35,7 +35,7 @@ abstract class AbstractBundle extends Bundle
     
     protected function getModelNamespace()
     {
-        return 'Xidea\Component\Base\Model';
+        return 'Xidea\Base';
     }
     
     protected function getModelMappings()

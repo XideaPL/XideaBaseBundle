@@ -4,22 +4,22 @@ namespace Xidea\Bundle\BaseBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Xidea\Component\Base\Loader\ModelLoaderInterface;
+use Xidea\Base\Model\LoaderInterface;
 
 class ModelToIdTransformer implements DataTransformerInterface
 {
 
     /**
-     * @var ModelLoaderInterface
+     * @var LoaderInterface
      */
-    private $modelLoader;
+    private $loader;
 
     /**
-     * @param ModelLoaderInterface $modelLoader
+     * @param LoaderInterface $loader
      */
-    public function __construct(ModelLoaderInterface $modelLoader)
+    public function __construct(LoaderInterface $loader)
     {
-        $this->modelLoader = $modelLoader;
+        $this->loader = $loader;
     }
 
     /**
@@ -52,7 +52,7 @@ class ModelToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        $model = $this->modelLoader->load($id);
+        $model = $this->loader->load($id);
 
         if (null === $model) {
             return null;

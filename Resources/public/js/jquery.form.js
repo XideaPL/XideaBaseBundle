@@ -13,8 +13,10 @@ $.widget( 'xidea.formcollection', {
     },
     _create: function() {
         this.index = this.element.find(this.options.formTag).length;
+        
+        var $widget = this;
         this.element.find(this.options.formTag).each(function() {
-           this._createRemoveButton($(this)); 
+           $widget._createRemoveButton($(this)); 
         });
         this._createAddButton();
     },
