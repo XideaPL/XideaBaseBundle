@@ -10,7 +10,7 @@
 namespace Xidea\Bundle\BaseBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Xidea\Bundle\BaseBundle\ConfigurationInterface;
+use Xidea\Base\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>

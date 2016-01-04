@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcherInterface,
     Symfony\Component\EventDispatcher\Event,
     Symfony\Component\Translation\TranslatorInterface;
-use Xidea\Bundle\BaseBundle\Template\TemplateManagerInterface;
-use Xidea\Bundle\BaseBundle\ConfigurationInterface;
+use Xidea\Bundle\BaseBundle\Template\ManagerInterface as TemplateManagerInterface;
+use Xidea\Base\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>

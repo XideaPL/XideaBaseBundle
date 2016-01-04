@@ -11,7 +11,7 @@ namespace Xidea\Bundle\BaseBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
-use Xidea\Bundle\BaseBundle\ConfigurationInterface,
+use Xidea\Base\ConfigurationInterface,
     Xidea\Bundle\BaseBundle\Form\Handler\FormHandlerInterface;
 
 /**
