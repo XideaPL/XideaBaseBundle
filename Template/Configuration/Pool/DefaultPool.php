@@ -7,12 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template;
+namespace Xidea\Bundle\BaseBundle\Template\Configuration\Pool;
+
+use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
+use Xidea\Bundle\BaseBundle\Template\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class TemplateConfigurationPool implements TemplateConfigurationPoolInterface
+class DefaultPool implements PoolInterface
 {
     /**
      * @var array
@@ -20,14 +23,14 @@ class TemplateConfigurationPool implements TemplateConfigurationPoolInterface
     protected $configurationScopes;
     
     /**
-     * @var TemplateConfigurationInterface[]
+     * @var ConfigurationInterface[]
      */
     protected $configurations;
     
     /**
      * @inheritDoc
      */
-    public function addConfiguration(TemplateConfigurationInterface $configuration, $priority = 0)
+    public function addConfiguration(ConfigurationInterface $configuration, $priority = 0)
     {
         $this->configurationScopes[$configuration->getScope()] = $priority;
         $this->configurations[$configuration->getScope()] = $configuration;

@@ -7,26 +7,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template;
+namespace Xidea\Bundle\BaseBundle\Template\Configuration;
+
+use Xidea\Bundle\BaseBundle\Template\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface TemplateConfigurationPoolInterface
+interface PoolInterface
 {
     /**
      * Adds a configuration.
      *
-     * @param TemplateConfigurationInterface $configuration
+     * @param ConfigurationInterface $configuration
      * @param int $priority
      */
     
-    function addConfiguration(TemplateConfigurationInterface $configuration, $priority = 0);
+    function addConfiguration(ConfigurationInterface $configuration, $priority = 0);
     
     /**
      * Returns a configuration.
      *
-     * @return TemplateConfigurationInterface
+     * @return ConfigurationInterface
      */
     function getConfiguration($scope);
     

@@ -2,17 +2,18 @@
 
 namespace Xidea\Bundle\BaseBundle\Twig\Extension;
 
+use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
+use Xidea\Base\Pagination\PaginationInterface;
+use Xidea\Base\Pagination\SortingInterface;
+
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPoolInterface,
-    Xidea\Bundle\BaseBundle\Pagination\PaginationInterface,
-    Xidea\Bundle\BaseBundle\Pagination\SortingInterface;
 
 class PaginationExtension extends \Twig_Extension
 {
     /*
-     * @var TemplateConfigurationPoolInterface
+     * @var PoolInterface
      */
-    protected $configurationPool;
+    protected $pool;
     
     /**
      * @var \Twig_Environment
@@ -26,11 +27,11 @@ class PaginationExtension extends \Twig_Extension
 
     /**
      * 
-     * @param TemplateConfigurationPoolInterface $configurationPool
+     * @param PoolInterface $pool
      */
-    public function __construct(TemplateConfigurationPoolInterface $configurationPool, UrlGeneratorInterface $router)
+    public function __construct(PoolInterface $pool, UrlGeneratorInterface $router)
     {
-        $this->configurationPool = $configurationPool;
+        $this->pool = $pool;
         $this->router = $router;
     }
     
@@ -65,7 +66,7 @@ class PaginationExtension extends \Twig_Extension
         $viewData = $pagination->getViewData();
         
         if (isset($options['template'])) {
-            return $this->environment->render($this->configurationPool->getTemplate($options['template']), $viewData);
+            return $this->environment->render($this->pool->getTemplate($options['template']), $viewData);
         }
     }
 
@@ -98,7 +99,7 @@ class PaginationExtension extends \Twig_Extension
         $viewData['attributes'] = $attributes;
 
         if (isset($options['template'])) {
-            return $this->environment->render($this->configurationPool->getTemplate($options['template']), $viewData);
+            return $this->environment->render($this->pool->getTemplate($options['template']), $viewData);
         }
     }
 

@@ -53,7 +53,7 @@ abstract class AbstractExtension extends Extension
             $defaultTemplateConfigurationName = $templateConfigurationName.'.default';
             
             if(!$container->hasDefinition($defaultTemplateConfigurationName)) {
-                $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Template\TemplateConfiguration', [
+                $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Template\Configuration\DefaultConfiguration', [
                     $config['template']['scope'],
                     $templates,
                     $config['template']['engine']

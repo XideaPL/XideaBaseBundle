@@ -1,9 +1,10 @@
 parameters:
-    xidea_base.configuration.pool.class: Xidea\Bundle\BaseBundle\ConfigurationPool
-    xidea_base.template.configuration.pool.class: Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPool
-    xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\TemplateManager
-    xidea_base.paginator.class: Xidea\Bundle\BaseBundle\Pagination\DefaultPaginator
-    xidea_base.sorter.class: Xidea\Bundle\BaseBundle\Pagination\DefaultSorter
+    xidea_base.configuration.pool.class: Xidea\Base\Configuration\Pool\DefaultPool
+    xidea_base.template.configuration.pool.class: Xidea\Bundle\BaseBundle\Template\Configuration\Pool\DefaultPool
+    xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\Manager\DefaultManager
+    xidea_base.pagination.request.class: Xidea\Base\Pagination\Request\SymfonyRequest
+    xidea_base.paginator.class: Xidea\Base\Pagination\Paginator\DefaultPaginator
+    xidea_base.sorter.class: Xidea\Base\Pagination\Sorter\DefaultSorter
 
 services:
     xidea_base.configuration.pool:
@@ -15,12 +16,16 @@ services:
         arguments:
             - @xidea_base.template.configuration.pool
             - @templating
+    xidea_base.pagination.request:
+        class: %xidea_base.pagination.request.class%
+        arguments:
+            - @request_stack
     xidea_base.paginator:
         class: %xidea_base.paginator.class%
         arguments:
-            - @request_stack
+            - @xidea_base.pagination.request
             - @xidea_base.sorter
     xidea_base.sorter:
         class: %xidea_base.sorter.class%
         arguments:
-            - @request_stack
+            - @xidea_base.pagination.request

@@ -7,21 +7,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template;
+namespace Xidea\Bundle\BaseBundle\Template\Manager;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPoolInterface;
+use Xidea\Bundle\BaseBundle\Template\ManagerInterface;
+use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class TemplateManager implements TemplateManagerInterface
+class DefaultManager implements ManagerInterface
 {
     /*
-     * @var TemplateConfigurationPoolInterface
+     * @var PoolInterface
      */
-    protected $configurationPool;
+    protected $pool;
     
     /**
      * @var EngineInterface
@@ -32,9 +33,9 @@ class TemplateManager implements TemplateManagerInterface
      * 
      * @param EngineInterface $templating
      */
-    public function __construct(TemplateConfigurationPoolInterface $configurationPool, EngineInterface $templating)
+    public function __construct(PoolInterface $pool, EngineInterface $templating)
     {
-        $this->configurationPool = $configurationPool;
+        $this->pool = $pool;
         $this->templating = $templating;
     }
 
@@ -45,7 +46,7 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->render($this->configurationPool->getTemplate($name, $format), $parameters);
+        return $this->templating->render($this->pool->getTemplate($name, $format), $parameters);
     }
     
     /**
@@ -55,6 +56,6 @@ class TemplateManager implements TemplateManagerInterface
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->renderResponse($this->configurationPool->getTemplate($name, $format), $parameters, $response);
+        return $this->templating->renderResponse($this->pool->getTemplate($name, $format), $parameters, $response);
     }
 }

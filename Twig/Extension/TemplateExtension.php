@@ -2,20 +2,20 @@
 
 namespace Xidea\Bundle\BaseBundle\Twig\Extension;
 
-use Xidea\Bundle\BaseBundle\Template\TemplateConfigurationPoolInterface;
+use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
 
 class TemplateExtension extends \Twig_Extension {
 
     /*
-     * @var TemplateConfigurationPoolInterface
+     * @var PoolInterface
      */
     protected $configurationPool;
 
     /**
      * 
-     * @param TemplateConfigurationPoolInterface $configurationPool
+     * @param PoolInterface $configurationPool
      */
-    public function __construct(TemplateConfigurationPoolInterface $configurationPool) {
+    public function __construct(PoolInterface $configurationPool) {
         $this->configurationPool = $configurationPool;
     }
     

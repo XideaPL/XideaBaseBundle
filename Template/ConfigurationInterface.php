@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle;
+namespace Xidea\Bundle\BaseBundle\Template;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -15,29 +15,31 @@ namespace Xidea\Bundle\BaseBundle;
 interface ConfigurationInterface
 {
     /**
-     * Returns the code related to the configuration.
      * 
+     * @param string $scope
+     */
+    function setScope($scope);
+    
+    /**
      * @return string
      */
-    function getCode();
+    function getScope();
     
-    /*
+    /**
+     * 
+     * @param string $engine
+     */
+    function setEngine($engine);
+    
+    /**
      * @return string
      */
-    function getPaginationParameterName();
+    function getEngine();
     
-    /*
-     * @return int
-     */
-    function getPaginationLimit();
-    
-    /*
-     * @return array
-     */
-    function getPaginationLimitValues();
-    
-    /*
+    /**
+     * Returns a template.
+     *
      * @return string
      */
-    function getSortParameterName();
+    function getTemplate($name, $format = 'html');
 }

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface TemplateManagerInterface
+interface ManagerInterface
 {
     /**
      * @return string
