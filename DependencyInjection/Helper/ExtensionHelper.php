@@ -1,12 +1,9 @@
 <?php
 
-namespace Xidea\Bundle\BaseBundle\DependencyInjection;
+namespace Xidea\Bundle\BaseBundle\DependencyInjection\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -14,31 +11,27 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-abstract class AbstractExtension extends Extension
+class ExtensionHelper
 {
-    /**
-     * {@inheritDoc}
+    /*
+     * @var string
      */
-    public function load(array $configs, ContainerBuilder $container)
+    protected $alias;
+    
+    public function __construct($alias)
     {
-        list($config, $loader) = $this->setUp($configs, new Configuration(), $container);
-
-        $this->loadTemplateSection($config, $container, $loader);
+        $this->alias = $alias;
     }
     
-    public function setUp(array $configs, ConfigurationInterface $configuration, ContainerBuilder $container)
+    public function getAlias()
     {
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $loader = new Loader\YamlFileLoader($container, new FileLocator($this->getConfigurationDirectory()));
-        
-        return array($config, $loader);
+        return $this->alias;
     }
     
-    protected function loadTemplateSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    public function loadTemplateSection(array $config, array $templates, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
         if(isset($config['template'])) {
-            $templates = array_merge($this->getDefaultTemplates(), $config['template']['templates']);
+            $templates = array_merge($templates, $config['template']['templates']);
 
             $parameters = array(
                 'template.scope' => $config['template']['scope'],
@@ -67,7 +60,7 @@ abstract class AbstractExtension extends Extension
         }
     }
     
-    protected function loadPaginationSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    public function loadPaginationSection(array $config, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
         if(isset($config['pagination'])) {
             $paginatorDefinitionName = sprintf('%s.paginator', $this->getAlias());            
@@ -86,12 +79,5 @@ abstract class AbstractExtension extends Extension
                 ]]);
             }
         }
-    }
-
-    abstract protected function getConfigurationDirectory();
-    
-    protected function getDefaultTemplates()
-    {
-        return array();
     }
 }

@@ -12,25 +12,24 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class XideaBaseExtension extends AbstractExtension
+class XideaBaseExtension extends Extension
 {
     /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        list($config, $loader) = $this->setUp($configs, new Configuration($this->getAlias()), $container);
+        $configuration = new Configuration($this->getAlias());
+        $config = $this->processConfiguration($configuration, $configs);
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        
         $loader->load('main.yml');
         $loader->load('twig.yml');
         
-        $this->loadTemplateSection($config, $container, $loader);
-        $this->loadPaginationSection($config, $container, $loader);
-    }
-    
-    protected function getConfigurationDirectory()
-    {
-        return __DIR__.'/../Resources/config';
+        $helper = new Helper\ExtensionHelper($this->getAlias());
+        $helper->loadTemplateSection($config, $this->getDefaultTemplates(), $container, $loader);
+        $helper->loadPaginationSection($config, $container, $loader);
     }
     
     protected function getDefaultTemplates()
