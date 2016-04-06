@@ -8,24 +8,24 @@ parameters:
 
 services:
     xidea_base.configuration.pool:
-        class: %xidea_base.configuration.pool.class%
+        class: '%xidea_base.configuration.pool.class%'
     xidea_base.template.configuration.pool:
-        class: %xidea_base.template.configuration.pool.class%
+        class: '%xidea_base.template.configuration.pool.class%'
     xidea_base.template_manager:
-        class: %xidea_base.template_manager.class%
+        class: '%xidea_base.template_manager.class%'
         arguments:
-            - @xidea_base.template.configuration.pool
-            - @templating
+            - '@xidea_base.template.configuration.pool'
+            - '@templating'
     xidea_base.pagination.request:
-        class: %xidea_base.pagination.request.class%
+        class: '%xidea_base.pagination.request.class%'
         arguments:
-            - @request_stack
+            - '@request_stack'
     xidea_base.paginator:
-        class: %xidea_base.paginator.class%
+        class: '%xidea_base.paginator.class%'
         arguments:
-            - @xidea_base.pagination.request
-            - @xidea_base.sorter
+            - '@xidea_base.pagination.request'
+            - '@xidea_base.sorter'
     xidea_base.sorter:
-        class: %xidea_base.sorter.class%
+        class: '%xidea_base.sorter.class%'
         arguments:
-            - @xidea_base.pagination.request
+            - '@xidea_base.pagination.request'

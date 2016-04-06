@@ -4,15 +4,15 @@ parameters:
 
 services:
     xidea_base.twig.template.extension:
-        class: %xidea_base.twig.template.extension.class%
+        class: '%xidea_base.twig.template.extension.class%'
         arguments:
-            - @xidea_base.template.configuration.pool
+            - '@xidea_base.template.configuration.pool'
         tags:
             - { name: twig.extension }
     xidea_base.twig.pagination.extension:
-        class: %xidea_base.twig.pagination.extension.class%
+        class: '%xidea_base.twig.pagination.extension.class%'
         arguments:
-            - @xidea_base.template.configuration.pool
-            - @router
+            - '@xidea_base.template.configuration.pool'
+            - '@router'
         tags:
             - { name: twig.extension }
