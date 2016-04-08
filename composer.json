@@ -23,10 +23,9 @@
         "doctrine/doctrine-bundle": "*"
     },
     "autoload": {
-        "psr-0": { "Xidea\\Bundle\\BaseBundle": "" }
+        "psr-4": { "Xidea\\Bundle\\BaseBundle\\": "" }
     },
-    "target-dir": "Xidea/Bundle/BaseBundle",
-	"extra": {
+    "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
         }
