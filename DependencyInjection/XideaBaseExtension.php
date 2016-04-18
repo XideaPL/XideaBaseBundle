@@ -30,7 +30,7 @@ class XideaBaseExtension extends Extension
         $loader->load('twig.yml');
         
         $helper = new Helper\ExtensionHelper($this->getAlias());
-        $helper->loadTemplateSection($config, $this->getDefaultTemplates(), $container, $loader);
+        $helper->loadTemplatingSection($config, $this->getDefaultTemplates(), $container, $loader);
         $helper->loadPaginationSection($config, $container, $loader);
     }
     

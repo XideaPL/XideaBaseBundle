@@ -8,10 +8,11 @@ services:
         class: '%xidea_base.routing.configuration.pool.class%'
     xidea_base.routing_loader:
         class: '%xidea_base.routing_loader.class%'
+        arguments:
+            - '@xidea_base.routing.configuration.pool'
         tags:
             - { name: routing.loader }
     xidea_base.routing_manager:
         class: '%xidea_base.routing_manager.class%'
         arguments:
-            - '@xidea_base.routing.configuration.pool'
             - '@router'

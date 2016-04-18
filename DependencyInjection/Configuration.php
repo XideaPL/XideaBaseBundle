@@ -36,7 +36,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root($this->getAlias());
         
         $helper = new Helper\ConfigurationHelper($this->getAlias());        
-        $helper->addTemplateSection($rootNode);
+        $helper->addTemplatingSection($rootNode);
         $helper->addPaginationSection($rootNode);
 
         return $treeBuilder;

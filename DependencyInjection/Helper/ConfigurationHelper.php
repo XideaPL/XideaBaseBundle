@@ -60,15 +60,15 @@ class ConfigurationHelper
             ->end();
     }
     
-    public function addTemplateSection(ArrayNodeDefinition $node, $engine = 'twig')
+    public function addTemplatingSection(ArrayNodeDefinition $node, $engine = 'twig')
     {
         $node
             ->children()
-                ->arrayNode('template')
+                ->arrayNode('templating')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('scope')->defaultValue($this->getAlias())->end()
-                        ->scalarNode('configuration')->defaultValue(sprintf('%s.template.configuration.default', $this->getAlias()))->end()
+                        ->scalarNode('configuration')->defaultValue(sprintf('%s.templating.configuration.default', $this->getAlias()))->end()
                         ->scalarNode('engine')->defaultValue($engine)->end()
                         ->scalarNode('priority')->defaultValue(0)->end()
                         ->arrayNode('templates')

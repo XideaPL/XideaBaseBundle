@@ -58,35 +58,35 @@ class ExtensionHelper
         }
     }
     
-    public function loadTemplateSection(array $config, array $templates, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    public function loadTemplatingSection(array $config, array $templates, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
-        if(isset($config['template'])) {
-            $templates = array_merge($templates, $config['template']['templates']);
+        if(isset($config['templating'])) {
+            $templates = array_merge($templates, $config['templating']['templates']);
 
             $parameters = array(
-                'template.scope' => $config['template']['scope'],
-                'template.engine' => $config['template']['engine'],
-                'template.templates' => $templates
+                'templating.scope' => $config['templating']['scope'],
+                'templating.engine' => $config['templating']['engine'],
+                'templating.templates' => $templates
             );
             foreach($parameters as $name => $value) {
                 $container->setParameter(sprintf('%s.%s', $this->getAlias(), $name), $value);
             }
             
-            $templateConfigurationName = sprintf('%s.template.configuration', $this->getAlias());
+            $templateConfigurationName = sprintf('%s.templating.configuration', $this->getAlias());
             $defaultTemplateConfigurationName = $templateConfigurationName.'.default';
             
             if(!$container->hasDefinition($defaultTemplateConfigurationName)) {
                 $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Templating\Configuration\DefaultConfiguration', [
-                    $config['template']['scope'],
+                    $config['templating']['scope'],
                     $templates,
-                    $config['template']['engine']
+                    $config['templating']['engine']
                 ]))
-                ->addTag('xidea_base.template.configuration', [
-                    'priority' => $config['template']['priority']
+                ->addTag('xidea_base.templating.configuration', [
+                    'priority' => $config['templating']['priority']
                 ]);
             }
             
-            $container->setAlias($templateConfigurationName, $config['template']['configuration']);
+            $container->setAlias($templateConfigurationName, $config['templating']['configuration']);
         }
     }
     

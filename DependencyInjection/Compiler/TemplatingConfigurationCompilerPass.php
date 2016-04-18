@@ -20,7 +20,7 @@ class TemplatingConfigurationCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $pool = 'xidea_base.template.configuration.pool';
+        $pool = 'xidea_base.templating.configuration.pool';
         
         if (!$container->hasDefinition($pool)) {
             return;
@@ -31,7 +31,7 @@ class TemplatingConfigurationCompilerPass implements CompilerPassInterface
         );
 
         $taggedServices = $container->findTaggedServiceIds(
-            'xidea_base.template.configuration'
+            'xidea_base.templating.configuration'
         );
         
         foreach ($taggedServices as $id => $tags) {
