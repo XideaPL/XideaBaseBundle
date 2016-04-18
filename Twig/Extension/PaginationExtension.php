@@ -2,7 +2,7 @@
 
 namespace Xidea\Bundle\BaseBundle\Twig\Extension;
 
-use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
+use Xidea\Bundle\BaseBundle\Templating\Configuration\PoolInterface;
 use Xidea\Base\Pagination\PaginationInterface;
 use Xidea\Base\Pagination\SortingInterface;
 

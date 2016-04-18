@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template;
+namespace Xidea\Bundle\BaseBundle\Templating;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>

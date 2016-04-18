@@ -1,5 +1,6 @@
 parameters:
-    xidea_base.twig.template.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\TemplateExtension
+    xidea_base.twig.routing.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\RoutingExtension
+    xidea_base.twig.templating.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\TemplatingExtension
     xidea_base.twig.pagination.extension.class: Xidea\Bundle\BaseBundle\Twig\Extension\PaginationExtension
 
 services:

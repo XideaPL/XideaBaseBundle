@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template\Manager;
+namespace Xidea\Bundle\BaseBundle\Templating\Manager;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Xidea\Bundle\BaseBundle\Template\ManagerInterface;
-use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
+use Xidea\Bundle\BaseBundle\Templating\ManagerInterface;
+use Xidea\Bundle\BaseBundle\Templating\Configuration\PoolInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>

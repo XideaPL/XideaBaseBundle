@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template;
+namespace Xidea\Bundle\BaseBundle\Routing;
 
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -19,10 +19,10 @@ interface ManagerInterface
     /**
      * @return string
      */
-    function render($name, array $parameters = array());
+    function url($name, array $parameters = array(), $referenceType = false);
     
     /**
-     * @return Response
+     * @return RedirectResponse
      */
-    function renderResponse($name, array $parameters = array(), Response $response = null);
+    function redirect($url, $status = 302, $headers = array());
 }

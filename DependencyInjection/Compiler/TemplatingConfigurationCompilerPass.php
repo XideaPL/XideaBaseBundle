@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class TemplateConfigurationCompilerPass implements CompilerPassInterface
+class TemplatingConfigurationCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

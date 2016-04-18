@@ -15,13 +15,14 @@ use Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcherInterface,
     Symfony\Component\EventDispatcher\Event,
     Symfony\Component\Translation\TranslatorInterface;
-use Xidea\Bundle\BaseBundle\Templating\ManagerInterface as TemplateManagerInterface;
+use Xidea\Bundle\BaseBundle\Response\HandlerInterface as ResponseHandlerInterface;
+use Xidea\Bundle\BaseBundle\Templating\ManagerInterface as TemplatingManagerInterface;
 use Xidea\Base\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-abstract class AbstractController
+trait BaseControllerTrait
 {
     /*
      * @var ConfigurationInterface
@@ -32,6 +33,11 @@ abstract class AbstractController
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+    
+    /*
+     * @var ResponseHandlerInterface
+     */
+    protected $responseHandler;
 
     /*
      * @var RouterInterface
@@ -44,18 +50,9 @@ abstract class AbstractController
     protected $translator;
 
     /*
-     * @var TemplateManagerInterface
+     * @var TemplatingManagerInterface
      */
-    protected $templateManager;
-
-    /**
-     * 
-     * @param ConfigurationInterface $configuration
-     */
-    public function __construct(ConfigurationInterface $configuration)
-    {
-        $this->configuration = $configuration;
-    }
+    protected $templatingManager;
 
     /**
      * 
@@ -83,6 +80,24 @@ abstract class AbstractController
     {
         return $this->eventDispatcher;
     }
+    
+    /**
+     * 
+     * @param ResponseHandlerInterface $responseHandler
+     */
+    public function setResponseHandler(ResponseHandlerInterface $responseHandler)
+    {
+        $this->responseHandler = $responseHandler;
+    }
+
+    /**
+     * 
+     * @return ResponseHandlerInterface
+     */
+    public function getResponseHandler()
+    {
+        return $this->responseHandler;
+    }
 
     /**
      * 
@@ -104,20 +119,20 @@ abstract class AbstractController
     
     /**
      * 
-     * @param TemplateManagerInterface $templateManager
+     * @param TemplatingManagerInterface $templatingManager
      */
-    public function setTemplateManager(TemplateManagerInterface $templateManager)
+    public function setTemplatingManager(TemplatingManagerInterface $templatingManager)
     {
-        $this->templateManager = $templateManager;
+        $this->templatingManager = $templatingManager;
     }
 
     /**
      * 
-     * @return TemplateManagerInterface
+     * @return TemplatingManagerInterface
      */
-    public function getTemplateManager()
+    public function getTemplatingManager()
     {
-        return $this->templateManager;
+        return $this->templatingManager;
     }
 
     /**
@@ -137,17 +152,6 @@ abstract class AbstractController
     {
         return $this->translator;
     }
-    
-    /**
-     * 
-     * @param string $url
-     * @param int $status
-     * @return RedirectResponse
-     */
-    protected function redirect($url, $status = 302)
-    {
-        return new RedirectResponse($url, $status);
-    }
 
     /**
      * 
@@ -159,24 +163,8 @@ abstract class AbstractController
      */
     protected function redirectToRoute($route, array $parameters = array(), $status = 302)
     {
-        if($this->getRouter())
-            return $this->redirect($this->getRouter()->generate($route, $parameters), $status);
-        
-        throw new \LogicException();
-    }
-
-    /**
-     * 
-     * @param string $view
-     * @param array $parameters
-     * @param Response|null $response
-     * @return Response
-     * @throws \LogicException
-     */
-    protected function render($view, array $parameters = array(), Response $response = null)
-    {
-        if($this->getTemplateManager())
-            return $this->getTemplateManager()->renderResponse($view, $parameters, $response);
+        if($this->getResponseHandler())
+            return $this->getResponseHandler()->redirect($this->getResponseHandler()->url($route, $parameters), $status);
         
         throw new \LogicException();
     }

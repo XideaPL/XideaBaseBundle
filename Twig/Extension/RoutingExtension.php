@@ -2,9 +2,9 @@
 
 namespace Xidea\Bundle\BaseBundle\Twig\Extension;
 
-use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
+use Xidea\Bundle\BaseBundle\Templating\Configuration\PoolInterface;
 
-class TemplateExtension extends \Twig_Extension {
+class RoutingExtension extends \Twig_Extension {
 
     /*
      * @var PoolInterface
@@ -22,15 +22,15 @@ class TemplateExtension extends \Twig_Extension {
     public function getFunctions()
     {
         return array(
-            'xidea_template' => new \Twig_Function_Method($this, 'getTemplate', array('is_safe' => array('html')))
+            'xidea_route' => new \Twig_Function_Method($this, 'getRoute', array('is_safe' => array('html')))
         );
     }
 
     public function getName() {
-        return 'xidea_base_template';
+        return 'xidea_base_routing';
     }
     
-    public function getTemplate($name, $format = 'html') {
-        return $this->configurationPool->getTemplate($name, $format);
+    public function getRoute($name) {
+        return $this->configurationPool->getRoute($name);
     }
 }

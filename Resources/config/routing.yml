@@ -1,0 +1,17 @@
+parameters:
+    xidea_base.routing.configuration.pool.class: Xidea\Bundle\BaseBundle\Routing\Configuration\Pool\DefaultPool
+    xidea_base.routing_loader.class: Xidea\Bundle\BaseBundle\Routing\Loader\DefaultLoader
+    xidea_base.routing_manager.class: Xidea\Bundle\BaseBundle\Routing\Manager\DefaultManager
+
+services:
+    xidea_base.routing.configuration.pool:
+        class: '%xidea_base.routing.configuration.pool.class%'
+    xidea_base.routing_loader:
+        class: '%xidea_base.routing_loader.class%'
+        tags:
+            - { name: routing.loader }
+    xidea_base.routing_manager:
+        class: '%xidea_base.routing_manager.class%'
+        arguments:
+            - '@xidea_base.routing.configuration.pool'
+            - '@router'

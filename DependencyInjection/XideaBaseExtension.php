@@ -25,6 +25,8 @@ class XideaBaseExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         
         $loader->load('main.yml');
+        $loader->load('routing.yml');
+        $loader->load('templating.yml');
         $loader->load('twig.yml');
         
         $helper = new Helper\ExtensionHelper($this->getAlias());

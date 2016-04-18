@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template\Configuration;
+namespace Xidea\Bundle\BaseBundle\Routing\Configuration;
 
-use Xidea\Bundle\BaseBundle\Template\ConfigurationInterface;
+use Xidea\Bundle\BaseBundle\Routing\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -38,9 +38,15 @@ interface PoolInterface
     function getConfigurations();
     
     /**
+     * return array
+     */
+    function getRoutes();
+    
+    /**
      * 
      * @param string $name
-     * @param string $format
+     * 
+     * @return array
      */
-    function getTemplate($name, $format = 'html');
+    function getRoute($name);
 }

@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Bundle\BaseBundle\Template\Configuration\Pool;
+namespace Xidea\Bundle\BaseBundle\Routing\Configuration\Pool;
 
-use Xidea\Bundle\BaseBundle\Template\Configuration\PoolInterface;
-use Xidea\Bundle\BaseBundle\Template\ConfigurationInterface;
+use Xidea\Bundle\BaseBundle\Routing\Configuration\PoolInterface;
+use Xidea\Bundle\BaseBundle\Routing\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -57,28 +57,28 @@ class DefaultPool implements PoolInterface
     /*
      * 
      */
-    public function getTemplate($name, $format = 'html')
+    public function getRoute($name)
     {
-        $resolveTemplate = function($configuration, $name, $format) {
+        $resolveRoute = function($configuration, $name) {
             if(is_object($configuration)) {
-                return $configuration->getTemplate($name, $format);
+                return $configuration->getRoute($name);
             }
-            return '';
+            return [];
         };
         
         if(strpos($name, '@') !== false) {
-            $templateData = explode('@', $name);
-            $configuration = $this->getConfiguration($templateData[1]);
-            $template = call_user_func($resolveTemplate, $configuration, $templateData[0], $format);
-            if($template) {
-                return $template;
+            $routeData = explode('@', $name);
+            $configuration = $this->getConfiguration($routeData[1]);
+            $route = call_user_func($resolveRoute, $configuration, $routeData[0]);
+            if($route) {
+                return $route;
             }
         } else {
             foreach($this->configurationScopes as $scope => $priority) {
                 $configuration = $this->getConfiguration($scope);
-                $template = call_user_func($resolveTemplate, $configuration, $name, $format);
-                if($template) {
-                    return $template;
+                $route = call_user_func($resolveRoute, $configuration, $name);
+                if($route) {
+                    return $route;
                 }
             }
         }
@@ -86,8 +86,23 @@ class DefaultPool implements PoolInterface
         throw new \Exception;
     }
     
-    /*
-     * 
+    /**
+     * @inheritDoc
+     */
+    public function getRoutes()
+    {
+        $routes = [];
+        
+        foreach($this->configurationScopes as $scope => $priority) {
+            $configuration = $this->getConfiguration($scope);
+            $routes += $configuration->getRoutes();
+        }
+        
+        return $routes;
+    }
+    
+    /**
+     * @return array
      */
     protected function sortConfigurations()
     {

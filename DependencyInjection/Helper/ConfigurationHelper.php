@@ -26,6 +26,40 @@ class ConfigurationHelper
         return $this->alias;
     }
     
+    public function addRoutingSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('routing')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('scope')->defaultValue($this->getAlias())->end()
+                        ->scalarNode('configuration')->defaultValue(sprintf('%s.routing.configuration.default', $this->getAlias()))->end()
+                        ->scalarNode('priority')->defaultValue(0)->end()
+                        ->arrayNode('routes')
+                            ->useAttributeAsKey('name')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('path')->end()
+                                    ->arrayNode('defaults')
+                                        ->useAttributeAsKey('name')
+                                        ->prototype('scalar')->end()
+                                        ->defaultValue([])
+                                    ->end()
+                                    ->arrayNode('requirements')
+                                        ->useAttributeAsKey('name')
+                                        ->prototype('scalar')->end()
+                                        ->defaultValue([])
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->defaultValue([])
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+    
     public function addTemplateSection(ArrayNodeDefinition $node, $engine = 'twig')
     {
         $node

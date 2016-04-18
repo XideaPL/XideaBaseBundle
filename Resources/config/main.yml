@@ -1,21 +1,13 @@
 parameters:
     xidea_base.configuration.pool.class: Xidea\Base\Configuration\Pool\DefaultPool
-    xidea_base.template.configuration.pool.class: Xidea\Bundle\BaseBundle\Template\Configuration\Pool\DefaultPool
-    xidea_base.template_manager.class: Xidea\Bundle\BaseBundle\Template\Manager\DefaultManager
     xidea_base.pagination.request.class: Xidea\Base\Pagination\Request\SymfonyRequest
     xidea_base.paginator.class: Xidea\Base\Pagination\Paginator\DefaultPaginator
     xidea_base.sorter.class: Xidea\Base\Pagination\Sorter\DefaultSorter
+    xidea_base.response_handler.class: Xidea\Bundle\BaseBundle\Response\Handler\DefaultHandler
 
 services:
     xidea_base.configuration.pool:
         class: '%xidea_base.configuration.pool.class%'
-    xidea_base.template.configuration.pool:
-        class: '%xidea_base.template.configuration.pool.class%'
-    xidea_base.template_manager:
-        class: '%xidea_base.template_manager.class%'
-        arguments:
-            - '@xidea_base.template.configuration.pool'
-            - '@templating'
     xidea_base.pagination.request:
         class: '%xidea_base.pagination.request.class%'
         arguments:
@@ -29,3 +21,8 @@ services:
         class: '%xidea_base.sorter.class%'
         arguments:
             - '@xidea_base.pagination.request'
+    xidea_base.response_handler:
+        class: '%xidea_base.response_handler.class%'
+        arguments:
+            - '@xidea_base.routing_manager'
+            - '@xidea_base.templating_manager'

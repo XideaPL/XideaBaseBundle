@@ -28,6 +28,36 @@ class ExtensionHelper
         return $this->alias;
     }
     
+    public function loadRoutingSection(array $config, array $routes, ContainerBuilder $container, Loader\YamlFileLoader $loader)
+    {
+        if(isset($config['routing'])) {
+            $routes = array_merge($routes, $config['routing']['routes']);
+
+            $parameters = array(
+                'routing.scope' => $config['routing']['scope'],
+                'routing.routes' => $routes
+            );
+            foreach($parameters as $name => $value) {
+                $container->setParameter(sprintf('%s.%s', $this->getAlias(), $name), $value);
+            }
+            
+            $routingConfigurationName = sprintf('%s.routing.configuration', $this->getAlias());
+            $defaultRoutingConfigurationName = $routingConfigurationName.'.default';
+            
+            if(!$container->hasDefinition($defaultRoutingConfigurationName)) {
+                $container->setDefinition($defaultRoutingConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Routing\Configuration\DefaultConfiguration', [
+                    $config['routing']['scope'],
+                    $routes
+                ]))
+                ->addTag('xidea_base.routing.configuration', [
+                    'priority' => $config['routing']['priority']
+                ]);
+            }
+            
+            $container->setAlias($routingConfigurationName, $config['routing']['configuration']);
+        }
+    }
+    
     public function loadTemplateSection(array $config, array $templates, ContainerBuilder $container, Loader\YamlFileLoader $loader)
     {
         if(isset($config['template'])) {
@@ -46,7 +76,7 @@ class ExtensionHelper
             $defaultTemplateConfigurationName = $templateConfigurationName.'.default';
             
             if(!$container->hasDefinition($defaultTemplateConfigurationName)) {
-                $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Template\Configuration\DefaultConfiguration', [
+                $container->setDefinition($defaultTemplateConfigurationName, new Definition('Xidea\Bundle\BaseBundle\Templating\Configuration\DefaultConfiguration', [
                     $config['template']['scope'],
                     $templates,
                     $config['template']['engine']
