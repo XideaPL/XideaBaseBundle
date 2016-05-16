@@ -43,14 +43,20 @@ class DefaultLoader extends Loader
     public function load($resource, $type = null)
     {
         if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "xidea" loader twice');
+            throw new \RuntimeException('Do not add the "xidea" loader twice.');
         }
 
         $routes = new RouteCollection();
         
         $routesArray = $this->pool->getRoutes();
         foreach($routesArray as $name => $config) {
-            $routes->add($name, new Route($config['path'], $config['defaults'], $config['requirements']));
+            $params = array('defaults' => array(), 'requirements' => array());
+            foreach($params as $key => &$array) {
+                if(isset($config[$key])) {
+                    $array = array_merge($array, $config[$key]);
+                }
+            }
+            $routes->add($name, new Route($config['path'], $params['defaults'], $params['requirements']));
         }
 
         $this->loaded = true;

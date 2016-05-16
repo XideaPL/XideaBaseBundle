@@ -13,6 +13,7 @@ use Xidea\Bundle\BaseBundle\Response\HandlerInterface;
 use Xidea\Bundle\BaseBundle\Routing\ManagerInterface as RoutingManagerInterface;
 use Xidea\Bundle\BaseBundle\Templating\ManagerInterface as TemplatingManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -38,28 +39,28 @@ class DefaultHandler implements HandlerInterface
         $this->routingManager = $routingManager;
         $this->templatingManager = $templatingManager;
     }
-
+    
     /**
      * @inheritDoc
      */
-    public function url($name, array $parameters = array(), $referenceType = false)
+    function view($template, array $parameters = array(), Response $response = null)
     {
-        return $this->routingManager->url($name, $parameters, $referenceType);
+        return new Response($this->templatingManager->render($template, $parameters, $response));
     }
     
     /**
      * @inheritDoc
      */
-    public function view($name, array $parameters = array(), Response $response = null)
+    function redirect($url, $status = Response::HTTP_FOUND, $headers = array())
     {
-        return $this->templatingManager->renderResponse($name, $parameters, $response);
+        return new RedirectResponse($url, $status, $headers);
     }
     
     /**
      * @inheritDoc
      */
-    public function redirect($url, $status = 302, $headers = array())
+    public function redirectToRoute($route, array $parameters = array(), $status = Response::HTTP_FOUND, $headers = array())
     {
-        return $this->routingManager->redirect($url, $status, $headers);
+        return new RedirectResponse($this->routingManager->url($route, $parameters), $status, $headers);
     }
 }

@@ -9,7 +9,6 @@
 
 namespace Xidea\Bundle\BaseBundle\Routing\Manager;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Xidea\Bundle\BaseBundle\Routing\ManagerInterface;
 
@@ -34,16 +33,8 @@ class DefaultManager implements ManagerInterface
     /**
      * @inheritDoc
      */
-    public function url($name, array $parameters = array(), $referenceType = false)
+    public function url($route, array $parameters = array(), $referenceType = false)
     {
-        return $this->router->generate($name, $parameters, $referenceType);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function redirect($url, $status = 302, $headers = array())
-    {
-        return new RedirectResponse($url, $status, $headers);
+        return $this->router->generate($route, $parameters, $referenceType);
     }
 }

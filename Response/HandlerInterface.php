@@ -17,17 +17,17 @@ use Symfony\Component\HttpFoundation\Response;
 interface HandlerInterface
 {
     /**
-     * @return string
-     */
-    function url($name, array $parameters = array(), $referenceType = false);
-    
-    /**
      * @return Response
      */
-    function view($name, array $parameters = array(), Response $response = null);
+    function view($template, array $parameters = array(), Response $response = null);
     
     /**
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    function redirect($url, $status = 302, $headers = array());
+    function redirect($url, $status = Response::HTTP_FOUND, $headers = array());
+    
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    function redirectToRoute($route, array $parameters = array(), $status = Response::HTTP_FOUND, $headers = array());
 }

@@ -9,7 +9,6 @@
 
 namespace Xidea\Bundle\BaseBundle\Templating\Manager;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Xidea\Bundle\BaseBundle\Templating\ManagerInterface;
 use Xidea\Bundle\BaseBundle\Templating\Configuration\PoolInterface;
@@ -42,20 +41,10 @@ class DefaultManager implements ManagerInterface
     /**
      * @inheritDoc
      */
-    public function render($name, array $parameters = array())
+    public function render($template, array $parameters = array())
     {
         $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
         
-        return $this->templating->render($this->pool->getTemplate($name, $format), $parameters);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function renderResponse($name, array $parameters = array(), Response $response = null)
-    {
-        $format = isset($parameters['_format']) ? $parameters['_format'] : 'html';
-        
-        return $this->templating->renderResponse($this->pool->getTemplate($name, $format), $parameters, $response);
+        return $this->templating->render($this->pool->getTemplate($template, $format), $parameters);
     }
 }

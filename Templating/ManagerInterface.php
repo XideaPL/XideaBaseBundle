@@ -8,9 +8,6 @@
  */
 
 namespace Xidea\Bundle\BaseBundle\Templating;
-
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
@@ -19,10 +16,5 @@ interface ManagerInterface
     /**
      * @return string
      */
-    function render($name, array $parameters = array());
-    
-    /**
-     * @return Response
-     */
-    function renderResponse($name, array $parameters = array(), Response $response = null);
+    function render($template, array $parameters = array());
 }
